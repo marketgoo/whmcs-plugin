@@ -1,7 +1,7 @@
 [
     {
        "order" : "3",
-       "name" : "marketgoo Marketing Tools",
+       "name" : "Website Marketing Tools",
        "type" : "group",
        "id" : "marketgoo"
     },
@@ -9,7 +9,7 @@
        "icon" : "marketgoo.png",
        "group_id" : "marketgoo",
        "order" : "1",
-       "name" : "Website Marketing Tools",
+       "name" : "SEO Tools",
        "type" : "link",
        "id" : "marketgoo-evolution",
        "uri" : "marketgoo/index.live.php?item=evolution"
