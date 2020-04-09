@@ -20,16 +20,16 @@
 class MarketgooProvisioning
 {
 
-    private $marketGooAPI;
+    private $marketgooAPI;
 
     public function __construct($params)
     {
-        $this->marketGooAPI = new MarketgooAPI($params['serverhostname'], $params['serverpassword']);
+        $this->marketgooAPI = new MarketgooAPI($params['serverhostname'], $params['serverpassword']);
     }
 
     public function create($params)
     {
-        $response = $this->marketGooAPI->post([
+        $response = $this->marketgooAPI->post([
             'request'     => ['accounts' => ''],
             'additional'  => [
                 'product' => $params['configoptions']['producttype'],
@@ -46,7 +46,7 @@ class MarketgooProvisioning
     {
         for ($i = 0; $i < $keywordPackets; $i++)
         {
-            $this->marketGooAPI->post([
+            $this->marketgooAPI->post([
                 'request'    => ['accounts' => $accountId, 'addons' => ''],
                 'additional' => ['addon' => 'keyword10']
             ]);
@@ -55,27 +55,27 @@ class MarketgooProvisioning
 
     public function terminate($accountId)
     {
-        $this->marketGooAPI->delete(['request' => ['accounts' => $accountId]]);
+        $this->marketgooAPI->delete(['request' => ['accounts' => $accountId]]);
     }
 
     public function suspend($accountId)
     {
-        $this->marketGooAPI->put(['request' => ['accounts' => $accountId, 'suspend' => '']]);
+        $this->marketgooAPI->put(['request' => ['accounts' => $accountId, 'suspend' => '']]);
     }
 
     public function unsuspend($accountId)
     {
-        $this->marketGooAPI->put(['request' => ['accounts' => $accountId, 'resume' => '']]);
+        $this->marketgooAPI->put(['request' => ['accounts' => $accountId, 'resume' => '']]);
     }
 
     public function login($accountId)
     {
-        return $this->marketGooAPI->get(['request' => ['login' => $accountId], 'additional' => ['expires' => 30]]);
+        return $this->marketgooAPI->get(['request' => ['login' => $accountId], 'additional' => ['expires' => 30]]);
     }
 
     public function changeProduct($accountId, $newProduct)
     {
-        return $this->marketGooAPI->put([
+        return $this->marketgooAPI->put([
             'request'    => ['accounts' => $accountId, 'upgrade' => ''],
             'additional' => ['product' => $newProduct]
         ]);
@@ -83,17 +83,17 @@ class MarketgooProvisioning
 
     public function updateAddon($accountId, $newAddon)
     {
-        $addons = $this->marketGooAPI->get(['request' => ['accounts' => $accountId, 'addons' => '']]);
+        $addons = $this->marketgooAPI->get(['request' => ['accounts' => $accountId, 'addons' => '']]);
         $addonsArray = json_decode($addons, true);
 
         foreach ($addonsArray as $addon)
         {
-            $this->marketGooAPI->delete(['request' => ['accounts' => $accountId, 'addons' => $addon['uuid']]]);
+            $this->marketgooAPI->delete(['request' => ['accounts' => $accountId, 'addons' => $addon['uuid']]]);
         }
 
         if ($newAddon != 'none')
         {
-            $this->marketGooAPI->post([
+            $this->marketgooAPI->post([
                 'request'    => ['accounts' => $accountId, 'addons' => ''],
                 'additional' => ['addon' => $newAddon]
             ]);
@@ -102,7 +102,7 @@ class MarketgooProvisioning
     
     public function getProductsList()
     {
-        $products = $this->marketGooAPI->get(['request' => ['me' => 'products']]);
+        $products = $this->marketgooAPI->get(['request' => ['me' => 'products']]);
         
         return json_decode($products, true);
     }

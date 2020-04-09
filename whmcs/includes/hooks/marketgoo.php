@@ -37,14 +37,14 @@ add_hook('AfterShoppingCartCheckout', 1, 'hydrateOrderFromSessionForMarketgoo');
 
 function hydrateOrderFromSessionForMarketgoo($vars = [])
 {
-    $marketGooSession = $_SESSION['marketgoo'];
+    $marketgooSession = $_SESSION['marketgoo'];
     $hosting          = Capsule::table('tblhosting')
         ->where('orderid', '=', $vars['OrderID'])
         ->first();
 
-    if(isset($marketGooSession[$hosting->userid]) && $marketGooSession[$hosting->userid]['product_id'] == $hosting->packageid)
+    if(isset($marketgooSession[$hosting->userid]) && $marketgooSession[$hosting->userid]['product_id'] == $hosting->packageid)
     {
-        $hostingSession = $marketGooSession[$hosting->userid];
+        $hostingSession = $marketgooSession[$hosting->userid];
         $username       = $hostingSession['username'];
         $domain         = $hostingSession['domain'];
 

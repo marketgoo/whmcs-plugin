@@ -57,8 +57,8 @@ if (isset($_REQUEST['gencustfield']) && $_REQUEST['gencustfield'] == 'true')
     $serverData['serverpassword'] = decrypt($serverDataRaw->password);
 
     //initialize marketgoo API
-    $marketGoo  = new MarketgooProvisioning($serverData);
-    $products   = $marketGoo->getProductsList();
+    $marketgoo  = new MarketgooProvisioning($serverData);
+    $products   = $marketgoo->getProductsList();
     $suboptions = [];
 
     foreach ($products as $product)
@@ -162,10 +162,10 @@ function marketgoo_CreateAccount($params)
 {
     try
     {
-        $marketGoo = new MarketgooProvisioning($params);
+        $marketgoo = new MarketgooProvisioning($params);
         $cpanel    = new Servers\Marketgoo\Cpanel\Cpanel($params);
 
-        $accountId = $marketGoo->create($params);
+        $accountId = $marketgoo->create($params);
         
         if (empty($accountId) || !$accountId || $accountId == '')
         {
@@ -179,7 +179,7 @@ function marketgoo_CreateAccount($params)
 
             if (!$cPanelAccount || $cPanelAccount == '')
             {
-                $marketGoo->terminate($accountId);
+                $marketgoo->terminate($accountId);
 
                 return 'Error when connecting to the cPanel!';
             }
@@ -188,7 +188,7 @@ function marketgoo_CreateAccount($params)
         {
             logModuleCall('marketgoo', 'Errro when connecting to the cPanel!', $ex->getMessage(), $ex);
 
-            $marketGoo->terminate($accountId);
+            $marketgoo->terminate($accountId);
             
             return "Error when connecting to the cPanel";
         }
@@ -205,7 +205,7 @@ function marketgoo_CreateAccount($params)
         if ($result['result'] != 'success')
         {
             //delete cPanel and marketgoo
-            $marketGoo->terminate($accountId);
+            $marketgoo->terminate($accountId);
             $cpanel->sendUuid('terminate');
 
             logModuleCall('marketgoo', 'Errro when updateing WHMCS product!', $vars, $result);
@@ -215,7 +215,7 @@ function marketgoo_CreateAccount($params)
 
         if (!empty($accountId) && isset($params['configoptions']['keywords']) && $params['configoptions']['keywords'] > 0)
         {
-            $marketGoo->addKeywords($accountId, $params['configoptions']['keywords']);
+            $marketgoo->addKeywords($accountId, $params['configoptions']['keywords']);
         }
 
         return 'success';
@@ -232,10 +232,10 @@ function marketgoo_TerminateAccount($params)
 {
     try
     {
-        $marketGoo = new MarketgooProvisioning($params);
+        $marketgoo = new MarketgooProvisioning($params);
         $cpanel    = new Servers\Marketgoo\Cpanel\Cpanel($params);
         
-        $marketGoo->terminate($params['username']);
+        $marketgoo->terminate($params['username']);
         $cpanel->sendUuid('terminate');
         
         return 'success';
@@ -250,10 +250,10 @@ function marketgoo_SuspendAccount($params)
 {
     try
     {
-        $marketGoo = new MarketgooProvisioning($params);
+        $marketgoo = new MarketgooProvisioning($params);
         $cpanel    = new Servers\Marketgoo\Cpanel\Cpanel($params);
 
-        $marketGoo->suspend($params['username']);
+        $marketgoo->suspend($params['username']);
         $cpanel->sendUuid('terminate');
 
         return 'success';
@@ -268,10 +268,10 @@ function marketgoo_UnsuspendAccount($params)
 {
     try
     {
-        $marketGoo = new MarketgooProvisioning($params);
+        $marketgoo = new MarketgooProvisioning($params);
         $cpanel    = new Servers\Marketgoo\Cpanel\Cpanel($params);
 
-        $marketGoo->unsuspend($params['username']);
+        $marketgoo->unsuspend($params['username']);
         $cpanel->sendUuid($params['username']);
 
         return 'success';
@@ -288,8 +288,8 @@ function marketgoo_ServiceSingleSignOn(array $params)
 
     try
     {
-        $marketGoo = new MarketgooProvisioning($params);
-        $loginLink = $marketGoo->login($params['username']);
+        $marketgoo = new MarketgooProvisioning($params);
+        $loginLink = $marketgoo->login($params['username']);
 
         $return = [
             'success'    => true,
@@ -308,11 +308,11 @@ function marketgoo_ClientArea($params)
 {
     try
     {
-        $marketGoo = new MarketgooProvisioning($params);
+        $marketgoo = new MarketgooProvisioning($params);
 
         if (isset($_POST['uid']) && !empty($_POST['uid']) && $_POST['uid'] == $params['userid'])
         {
-            $loginLink = $marketGoo->login($params['username']);
+            $loginLink = $marketgoo->login($params['username']);
 
             header('Location: ' . $loginLink);
             die();
@@ -333,16 +333,16 @@ function marketgoo_ChangePackage($params)
 {
     try
     {
-        $marketGoo = new MarketgooProvisioning($params);
+        $marketgoo = new MarketgooProvisioning($params);
 
         if (isset($params['configoptions']['producttype']))
         {
-            $marketGoo->changeProduct($params['username'], $params['configoptions']['producttype']);
+            $marketgoo->changeProduct($params['username'], $params['configoptions']['producttype']);
         }
 
         if (isset($params['configoptions']['keywords']))
         {
-            $marketGoo->updateAddon($params['username'], $params['configoptions']['keywords']);
+            $marketgoo->updateAddon($params['username'], $params['configoptions']['keywords']);
         }
 
         return "success";

@@ -49,9 +49,9 @@ class cPanelCheck
 
             if (isset($account['username']) && strtolower($account['domainstatus']) != 'terminated')
             {
-                $marketGooAPI = new MarketgooAPI($server['hostname'], $server['password']);
+                $marketgooAPI = new MarketgooAPI($server['hostname'], $server['password']);
 
-                $link = $marketGooAPI->get(['request' => ['login' => $account['username']], 'additional' => ['expires' => 30]]);
+                $link = $marketgooAPI->get(['request' => ['login' => $account['username']], 'additional' => ['expires' => 30]]);
             }
             else
             {

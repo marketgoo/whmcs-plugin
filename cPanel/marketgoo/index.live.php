@@ -3,9 +3,9 @@ require("marketgoo.live.php");
 
 $mktgoo = new Mktgoo();
 
-$marketGooPlans = $mktgoo->get_buy_plans();
+$marketgooPlans = $mktgoo->get_buy_plans();
 //echo '<pre>';
-//var_dump($marketGooPlans);
+//var_dump($marketgooPlans);
 //echo '</pre>';
 //die;
 
@@ -14,7 +14,7 @@ define("marketgoo_INCLUDES", '/usr/local/cpanel/share/marketgoo/');
 require_once marketgoo_INCLUDES.'marketgooLoader.php';
 
 $CPANEL = $mktgoo->cpanel;
-$marketGoo = new MarketgooMainController('CPanel', __DIR__);
+$marketgoo = new MarketgooMainController('CPanel', __DIR__);
 
 echo MarketgooDriver::localAPI()->getHeader();
 ?>
@@ -357,10 +357,10 @@ echo MarketgooDriver::localAPI()->getHeader();
                                 <td><?php echo $domain['domainName'] ?></td>
                                 <td>
                                     <?php if ($domain['status'] != 1): ?>
-                                        <?php if (!empty($marketGooPlans)): ?>
+                                        <?php if (!empty($marketgooPlans)): ?>
                                             <select name="plan">
-                                                <?php foreach ($marketGooPlans as $marketGooPlan): ?>
-                                                    <option value="<?php echo $marketGooPlan['pid'] ?>"><?php echo $marketGooPlan['name'] ?></option>
+                                                <?php foreach ($marketgooPlans as $marketgooPlan): ?>
+                                                    <option value="<?php echo $marketgooPlan['pid'] ?>"><?php echo $marketgooPlan['name'] ?></option>
                                                 <?php endforeach ?>
                                             </select>
                                         <?php else: ?>
@@ -369,10 +369,10 @@ echo MarketgooDriver::localAPI()->getHeader();
                                             </select>
                                         <?php endif ?>
                                     <?php else: ?>
-                                        <?php if (!empty($marketGooPlans)): ?>
-                                            <?php foreach ($marketGooPlans as $marketGooPlan): ?>
-                                                <?php if ($marketGooPlan['pid'] == $domain['pid']): ?>
-                                                    <?php echo $marketGooPlan['name'] ?>
+                                        <?php if (!empty($marketgooPlans)): ?>
+                                            <?php foreach ($marketgooPlans as $marketgooPlan): ?>
+                                                <?php if ($marketgooPlan['pid'] == $domain['pid']): ?>
+                                                    <?php echo $marketgooPlan['name'] ?>
                                                 <?php endif ?>
                                             <?php endforeach ?>
                                         <?php endif ?>
@@ -384,7 +384,7 @@ echo MarketgooDriver::localAPI()->getHeader();
                                             <?php echo $mktgoo->translate('Login to marketgoo') ?>
                                         </a>
                                     <?php else: ?>
-                                        <a href="<?php echo $domain['buyUrl'].'&pid='.$marketGooPlans[0]['pid'] ?>" target="_blank" class="btn btn-orange buy_button">
+                                        <a href="<?php echo $domain['buyUrl'].'&pid='.$marketgooPlans[0]['pid'] ?>" target="_blank" class="btn btn-orange buy_button">
                                             <?php echo $mktgoo->translate('Buy Now marketgoo') ?>
                                         </a>
                                     <?php endif ?>

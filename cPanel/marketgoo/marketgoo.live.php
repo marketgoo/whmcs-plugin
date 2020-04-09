@@ -148,7 +148,7 @@ class Mktgoo
 
     public function open_site($domain)
     {
-        $link = $this->marketGooRequest(
+        $link = $this->marketgooRequest(
             'get', ['login' => $this->container->offsetGet($domain)], ['additional' => ['expires' => 30]], $this->config['marketdomain'], $this->config['marketapikey']
         );
         header("Location: ".$link);
@@ -348,7 +348,7 @@ class Mktgoo
         return "";
     }
 
-    private function marketGooRequest($method, $params = [], $additional = [], $endpoint, $token)
+    private function marketgooRequest($method, $params = [], $additional = [], $endpoint, $token)
     {
         $ch         = curl_init();
         $url        = 'https://'.$endpoint.'/api'.$this->buildQuery($method, $params, $additional);
