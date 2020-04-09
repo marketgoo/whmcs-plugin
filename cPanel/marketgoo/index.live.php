@@ -385,7 +385,7 @@ echo MarketgooDriver::localAPI()->getHeader();
                                         </a>
                                     <?php else: ?>
                                         <a href="<?php echo $domain['buyUrl'].'&pid='.$marketgooPlans[0]['pid'] ?>" target="_blank" class="btn btn-orange buy_button">
-                                            <?php echo $mktgoo->translate('Buy Now marketgoo') ?>
+                                            <?php echo $mktgoo->translate('Buy Now') ?>
                                         </a>
                                     <?php endif ?>
                                 </td>
