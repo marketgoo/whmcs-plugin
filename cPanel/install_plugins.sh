@@ -88,6 +88,8 @@ echo "${WHITE}Installing cPanel Plugins${RESET}   (This may take a couple minute
     
 display_progress
 
+sh plugins/compress.sh
+
 advance_progress && install_plugin
 
 if [ -x ${INSTALL_CMD_44} ]; then
