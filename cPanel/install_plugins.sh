@@ -23,6 +23,10 @@ THEMES=`find $THEMEDIR -maxdepth 1 -type d -exec basename {} \; | tail -n +2`
 TEMPDIR=/
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+url=$1
+marketdomain=$2
+marketapikey=$3
+
 display_progress()
 {
     echo "${WHITE}0%           25%            50%           75%           100%${RESET}"
@@ -35,18 +39,27 @@ install_libraries()
     )
     configFile='/usr/local/cpanel/etc/marketgoo.ini';
 
-    echo -n "
+    if [ -z "$url" ]
+    then
+        echo -n "
 Enter WHMCS endpoint URL:
 :";
-    read url;    
-    echo -n "
+        read url;
+    fi
+    if [ -z "$marketdomain" ]
+    then
+        echo -n "
 Enter marketgoo Domain:
 :";
-    read marketdomain;      
-    echo -n "
+        read marketdomain;
+    fi
+    if [ -z "$marketapikey" ]
+    then
+        echo -n "
 Enter marketgoo Api Key:
 :";
-    read marketapikey;
+        read marketapikey;
+    fi
 
     echo "
     endpoint='$url'
