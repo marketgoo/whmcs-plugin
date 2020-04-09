@@ -132,6 +132,16 @@ echo MarketgooDriver::localAPI()->getHeader();
         background-color: #cc4600;
     }
 
+    .marketgoo-form .btn-grey{
+        background: #808080;
+        color: white;
+        border: none;
+    }
+
+    .marketgoo-form .btn-grey:hover{
+        cursor: default;
+    }
+
     .marketgoo-form .form-actions {
         margin: 20px 0px 0px 0px;
         text-align: center;
@@ -384,9 +394,15 @@ echo MarketgooDriver::localAPI()->getHeader();
                                             <?php echo $mktgoo->translate('Login to marketgoo') ?>
                                         </a>
                                     <?php else: ?>
-                                        <a href="<?php echo $domain['buyUrl'].'&pid='.$marketgooPlans[0]['pid'] ?>" target="_blank" class="btn btn-orange buy_button">
-                                            <?php echo $mktgoo->translate('Buy Now') ?>
-                                        </a>
+                                        <?php if (!empty($marketgooPlans)): ?>
+                                            <a href="<?php echo $domain['buyUrl'].'&pid='.$marketgooPlans[0]['pid'] ?>" target="_blank" class="btn btn-orange buy_button">
+                                                <?php echo $mktgoo->translate('Buy Now') ?>
+                                            </a>
+                                        <?php else: ?>
+                                            <span class="btn btn-grey buy_button">
+                                                <?php echo $mktgoo->translate('Buy Now') ?>
+                                            </span>
+                                        <?php endif ?>
                                     <?php endif ?>
                                 </td>
                             </tr>
