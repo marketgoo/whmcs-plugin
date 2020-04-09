@@ -1,6 +1,6 @@
 <?php
 
-namespace Servers\MarketGoo\Cpanel;
+namespace Servers\Marketgoo\Cpanel;
 
 /* * ********************************************************************
  * 
@@ -21,7 +21,7 @@ namespace Servers\MarketGoo\Cpanel;
  *
  * ******************************************************************** */
 
-require_once ROOTDIR.'/modules/servers/MarketGoo/MarketGooHelpers/PDOWrapper.php';
+require_once ROOTDIR.'/modules/servers/marketgoo/marketgooHelpers/PDOWrapper.php';
 
 /**
  * Description of Cpanel
@@ -76,7 +76,7 @@ class Cpanel
         {
             logActivity(
                 sprintf(
-                    'MarketGoo: Passed username (%s) does not match any cPanel hostings for this account. Service ID: %s',
+                    'marketgoo: Passed username (%s) does not match any cPanel hostings for this account. Service ID: %s',
                     $this->cpanelUsername, $this->serviceId, $this->serviceId
                 )
             );
@@ -145,7 +145,7 @@ class Cpanel
 
         if(curl_error($ch))
         {
-            logModuleCall('MarketGoo','Error when connecting to cPanel', ['URL' => $url], curl_error($ch));
+            logModuleCall('marketgoo','Error when connecting to cPanel', ['URL' => $url], curl_error($ch));
 
             throw new \Exception('Error when connecting to cPanel: '.curl_error($ch));
         }
@@ -154,7 +154,7 @@ class Cpanel
 
         if ($httpCode >= 400 && $httpCode < 500)
         {
-            logModuleCall('MarketGoo', 'Error when connecting to cPanel', ['URL' => $url], ['errorCode' => $httpCode]);
+            logModuleCall('marketgoo', 'Error when connecting to cPanel', ['URL' => $url], ['errorCode' => $httpCode]);
 
             throw new \Exception('CODE: '.$httpCode);
         }
@@ -226,7 +226,7 @@ class Cpanel
             
             if(curl_error($ch))
             {
-                logModuleCall('MarketGoo','SendUuidToCpanel', ['URL' => $url, 'uuid' => $uuid], curl_error($ch));
+                logModuleCall('marketgoo','SendUuidToCpanel', ['URL' => $url, 'uuid' => $uuid], curl_error($ch));
 
                 throw new Exception('Error when connecting to cPanel: '.curl_error($ch));
             }
@@ -235,12 +235,12 @@ class Cpanel
 
             if ($httpCode >= 400 && $httpCode < 500)
             {
-                logModuleCall('MarketGoo', 'SendUuidToCpanel', ['URL' => $url], print_r($resp, true), ['uuid' => $uuid], []);
+                logModuleCall('marketgoo', 'SendUuidToCpanel', ['URL' => $url], print_r($resp, true), ['uuid' => $uuid], []);
 
                 throw new Exception('CODE: '.$httpCode.'. '.$resp);
             }
 
-            logModuleCall('MarketGoo', 'SendUuidToCpanel', ['URL' => $url], print_r($resp, true), ['uuid' => $uuid], []);
+            logModuleCall('marketgoo', 'SendUuidToCpanel', ['URL' => $url], print_r($resp, true), ['uuid' => $uuid], []);
             
             return $resp;
         }

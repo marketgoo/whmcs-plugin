@@ -1,16 +1,16 @@
 <?php
 
-function MarketGooLoader($class)
+function marketgooLoader($class)
 {
 
     $searchDirs = array(
         'Classes',
-        'Classes' . DS . 'MarketGooAPI',
+        'Classes' . DS . 'marketgooAPI',
         'Drivers',
         'Models'
     );
     if (preg_match("/^([A-Z]{1,3}[a-z]{0,10})([A-Z][a-zA-Z]+)Driver$/D", $class, $results)) {
-        if ($results[1] . $results[2] == 'MarketGoo') {
+        if ($results[1] . $results[2] == 'marketgoo') {
             $driverFile = __DIR__ . DS . 'Drivers' . DS . $class . '.php';
 
             if (!file_exists($driverFile)) {
@@ -44,6 +44,6 @@ function MarketGooLoader($class)
     }
 }
 
-spl_autoload_register('MarketGooLoader');
+spl_autoload_register('marketgooLoader');
 
-require_once __DIR__ . DS . 'MarketGooMainController.php';
+require_once __DIR__ . DS . 'marketgooMainController.php';

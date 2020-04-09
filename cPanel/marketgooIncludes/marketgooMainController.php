@@ -17,7 +17,7 @@
  * * ******************************************************************
  */
 
-class MarketGooMainController extends AbstractControler
+class MarketgooMainController extends AbstractControler
 {
 
     function __construct($type, $dir)
@@ -36,15 +36,15 @@ class MarketGooMainController extends AbstractControler
                 throw new Exception('Unable to find local API class:' . $localAPIClass);
             }
 
-            MarketGooDriver::localAPI($localAPIClass, $this);
+            MarketgooDriver::localAPI($localAPIClass, $this);
 
-            $remoteAPIClass = 'MarketGooWHMCSAPI';
+            $remoteAPIClass = 'MarketgooWHMCSAPI';
 
             if (!class_exists($remoteAPIClass)) {
                 throw new SystemException('Unable to find remote API class:' . $remoteAPIClass);
             }
 
-            MarketGooDriver::remoteAPI($remoteAPIClass, $this);
+            MarketgooDriver::remoteAPI($remoteAPIClass, $this);
         } catch (Exception $ex) {
             echo $ex->getMessage();
         }

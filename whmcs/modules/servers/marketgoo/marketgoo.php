@@ -24,9 +24,9 @@ use WHMCS\Database\Capsule;
 spl_autoload_register(function ($className)
 {
     $moduleDirectories = [
-        'MarketGooAPI',
-        'MarketGooHelpers',
-        'MarketGooProvisioning'
+        'marketgooAPI',
+        'marketgooHelpers',
+        'marketgooProvisioning'
     ];
 
     foreach ($moduleDirectories as $dir)
@@ -49,15 +49,15 @@ if (isset($_REQUEST['gencustfield']) && $_REQUEST['gencustfield'] == 'true')
     //make  a request to marketgoo api to get the available product types
     $serverDataRaw = Capsule::table('tblservers')
         ->select('hostname', 'password')
-        ->where('type', '=', 'MarketGoo')
+        ->where('type', '=', 'marketgoo')
         ->first();
 
     $serverData                   = [];
     $serverData['serverhostname'] = $serverDataRaw->hostname;
     $serverData['serverpassword'] = decrypt($serverDataRaw->password);
 
-    //initialize MarketGoo API
-    $marketGoo  = new MarketGooProvisioning($serverData);
+    //initialize marketgoo API
+    $marketGoo  = new MarketgooProvisioning($serverData);
     $products   = $marketGoo->getProductsList();
     $suboptions = [];
 
@@ -115,22 +115,22 @@ if (isset($_REQUEST['gencustfield']) && $_REQUEST['gencustfield'] == 'true')
         ]
     ];
 
-    $conf   = new ConfigurableOptionsGenerator($_REQUEST['id'], 'MarketGoo');
-    $custom = new CustomFieldGenerator($_REQUEST['id'], 'MarketGoo');
+    $conf   = new ConfigurableOptionsGenerator($_REQUEST['id'], 'marketgoo');
+    $custom = new CustomFieldGenerator($_REQUEST['id'], 'marketgoo');
 
     $conf->generate($options);
     $custom->generate($customOptions);
 }
 
-function MarketGoo_ConfigOptions($params)
+function marketgoo_ConfigOptions($params)
 {
     $customOptions = [
         ['fieldkey' => 'cpanel_username'],
         ['fieldkey' => 'domain']
     ];
 
-    $conf   = new ConfigurableOptionsGenerator($_REQUEST['id'], 'MarketGoo');
-    $custom = new CustomFieldGenerator($_REQUEST['id'], 'MarketGoo');
+    $conf   = new ConfigurableOptionsGenerator($_REQUEST['id'], 'marketgoo');
+    $custom = new CustomFieldGenerator($_REQUEST['id'], 'marketgoo');
     
     if ($conf->checkIfAlreadyGenerated() && $custom->checkIfAlreadyGenerated($customOptions))
     {
@@ -158,18 +158,18 @@ function MarketGoo_ConfigOptions($params)
     return $configarray;
 }
 
-function MarketGoo_CreateAccount($params)
+function marketgoo_CreateAccount($params)
 {
     try
     {
-        $marketGoo = new MarketGooProvisioning($params);
-        $cpanel    = new Servers\MarketGoo\Cpanel\Cpanel($params);
+        $marketGoo = new MarketgooProvisioning($params);
+        $cpanel    = new Servers\Marketgoo\Cpanel\Cpanel($params);
 
         $accountId = $marketGoo->create($params);
         
         if (empty($accountId) || !$accountId || $accountId == '')
         {
-            return 'Error when creating MarketGoo account!';
+            return 'Error when creating marketgoo account!';
         }
         
         try
@@ -186,7 +186,7 @@ function MarketGoo_CreateAccount($params)
         }
         catch (Exception $ex)
         {
-            logModuleCall('MarketGoo', 'Errro when connecting to the cPanel!', $ex->getMessage(), $ex);
+            logModuleCall('marketgoo', 'Errro when connecting to the cPanel!', $ex->getMessage(), $ex);
 
             $marketGoo->terminate($accountId);
             
@@ -204,11 +204,11 @@ function MarketGoo_CreateAccount($params)
         //check if WHMCS api error
         if ($result['result'] != 'success')
         {
-            //delete cPanel and MarketGoo
+            //delete cPanel and marketgoo
             $marketGoo->terminate($accountId);
             $cpanel->sendUuid('terminate');
 
-            logModuleCall('MarketGoo', 'Errro when updateing WHMCS product!', $vars, $result);
+            logModuleCall('marketgoo', 'Errro when updateing WHMCS product!', $vars, $result);
 
             return 'Errro when updateing WHMCS product!';
         }
@@ -222,18 +222,18 @@ function MarketGoo_CreateAccount($params)
     }
     catch (Exception $e)
     {
-        logModuleCall('MarketGoo', 'Errro when creating MarketGoo account!', $e->getMessage(), $e);
+        logModuleCall('marketgoo', 'Errro when creating marketgoo account!', $e->getMessage(), $e);
 
         return $e->getMessage();
     }
 }
 
-function MarketGoo_TerminateAccount($params)
+function marketgoo_TerminateAccount($params)
 {
     try
     {
-        $marketGoo = new MarketGooProvisioning($params);
-        $cpanel    = new Servers\MarketGoo\Cpanel\Cpanel($params);
+        $marketGoo = new MarketgooProvisioning($params);
+        $cpanel    = new Servers\Marketgoo\Cpanel\Cpanel($params);
         
         $marketGoo->terminate($params['username']);
         $cpanel->sendUuid('terminate');
@@ -246,12 +246,12 @@ function MarketGoo_TerminateAccount($params)
     }
 }
 
-function MarketGoo_SuspendAccount($params)
+function marketgoo_SuspendAccount($params)
 {
     try
     {
-        $marketGoo = new MarketGooProvisioning($params);
-        $cpanel    = new Servers\MarketGoo\Cpanel\Cpanel($params);
+        $marketGoo = new MarketgooProvisioning($params);
+        $cpanel    = new Servers\Marketgoo\Cpanel\Cpanel($params);
 
         $marketGoo->suspend($params['username']);
         $cpanel->sendUuid('terminate');
@@ -264,12 +264,12 @@ function MarketGoo_SuspendAccount($params)
     }
 }
 
-function MarketGoo_UnsuspendAccount($params)
+function marketgoo_UnsuspendAccount($params)
 {
     try
     {
-        $marketGoo = new MarketGooProvisioning($params);
-        $cpanel    = new Servers\MarketGoo\Cpanel\Cpanel($params);
+        $marketGoo = new MarketgooProvisioning($params);
+        $cpanel    = new Servers\Marketgoo\Cpanel\Cpanel($params);
 
         $marketGoo->unsuspend($params['username']);
         $cpanel->sendUuid($params['username']);
@@ -282,13 +282,13 @@ function MarketGoo_UnsuspendAccount($params)
     }
 }
 
-function MarketGoo_ServiceSingleSignOn(array $params)
+function marketgoo_ServiceSingleSignOn(array $params)
 {
     $return = ['success' => false];
 
     try
     {
-        $marketGoo = new MarketGooProvisioning($params);
+        $marketGoo = new MarketgooProvisioning($params);
         $loginLink = $marketGoo->login($params['username']);
 
         $return = [
@@ -304,11 +304,11 @@ function MarketGoo_ServiceSingleSignOn(array $params)
     return $return;
 }
 
-function MarketGoo_ClientArea($params)
+function marketgoo_ClientArea($params)
 {
     try
     {
-        $marketGoo = new MarketGooProvisioning($params);
+        $marketGoo = new MarketgooProvisioning($params);
 
         if (isset($_POST['uid']) && !empty($_POST['uid']) && $_POST['uid'] == $params['userid'])
         {
@@ -329,11 +329,11 @@ function MarketGoo_ClientArea($params)
     }
 }
 
-function MarketGoo_ChangePackage($params)
+function marketgoo_ChangePackage($params)
 {
     try
     {
-        $marketGoo = new MarketGooProvisioning($params);
+        $marketGoo = new MarketgooProvisioning($params);
 
         if (isset($params['configoptions']['producttype']))
         {

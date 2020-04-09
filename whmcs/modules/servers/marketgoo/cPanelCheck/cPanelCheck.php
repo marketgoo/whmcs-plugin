@@ -17,9 +17,9 @@
  * * ******************************************************************
  */
 
-require_once '../MarketGooAPI/MarketGooAPI.php';
-require_once '../MarketGooHelpers/cPanelCheckDatabase.php';
-require_once '../MarketGooProvisioning/MarketGooProvisioning.php';
+require_once '../marketgooAPI/marketgooAPI.php';
+require_once '../marketgooHelpers/cPanelCheckDatabase.php';
+require_once '../marketgooProvisioning/marketgooProvisioning.php';
 
 class cPanelCheck
 {
@@ -39,7 +39,7 @@ class cPanelCheck
             $protocolServer = filter_input(INPUT_SERVER, 'REQUEST_SCHEME', FILTER_SANITIZE_STRING);
             $serverName     = filter_input(INPUT_SERVER, 'SERVER_NAME', FILTER_SANITIZE_STRING);
             $scriptName     = filter_input(INPUT_SERVER, 'SCRIPT_NAME', FILTER_SANITIZE_STRING);
-            $whmcsUrl       = str_replace('/modules/servers/MarketGoo/cPanelCheck/cPanelCheck.php', '', $scriptName);
+            $whmcsUrl       = str_replace('/modules/servers/marketgoo/cPanelCheck/cPanelCheck.php', '', $scriptName);
 
             $procotol = strlen($protocolServer) > 0 ? $protocolServer : 'http';
             $endpoint = $procotol.'://' . $serverName.$whmcsUrl;
@@ -49,7 +49,7 @@ class cPanelCheck
 
             if (isset($account['username']) && strtolower($account['domainstatus']) != 'terminated')
             {
-                $marketGooAPI = new MarketGooAPI($server['hostname'], $server['password']);
+                $marketGooAPI = new MarketgooAPI($server['hostname'], $server['password']);
 
                 $link = $marketGooAPI->get(['request' => ['login' => $account['username']], 'additional' => ['expires' => 30]]);
             }

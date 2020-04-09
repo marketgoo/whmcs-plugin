@@ -1,6 +1,6 @@
 <?php
 
-class MarketGooDriver
+class MarketgooDriver
 {
 
     static private $_instances = array();

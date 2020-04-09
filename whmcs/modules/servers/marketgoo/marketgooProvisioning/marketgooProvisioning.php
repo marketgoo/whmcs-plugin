@@ -17,14 +17,14 @@
  * * ******************************************************************
  */
 
-class MarketGooProvisioning
+class MarketgooProvisioning
 {
 
     private $marketGooAPI;
 
     public function __construct($params)
     {
-        $this->marketGooAPI = new MarketGooAPI($params['serverhostname'], $params['serverpassword']);
+        $this->marketGooAPI = new MarketgooAPI($params['serverhostname'], $params['serverpassword']);
     }
 
     public function create($params)

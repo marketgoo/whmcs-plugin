@@ -3,7 +3,7 @@
 class WHMConfigDriver extends AbstractConfigDriver
 {
 
-    private $configFile = '/usr/local/cpanel/etc/MarketGoo.ini';
+    private $configFile = '/usr/local/cpanel/etc/marketgoo.ini';
 
     function __construct($params)
     {

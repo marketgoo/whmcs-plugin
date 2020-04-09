@@ -44,7 +44,7 @@ class Mktgoo
 
     public function load_config()
     {
-        $configFile = '/usr/local/cpanel/etc/MarketGoo.ini';
+        $configFile = '/usr/local/cpanel/etc/marketgoo.ini';
         $config     = parse_ini_file($configFile);
 
         if (substr($config['endpoint'], 0, 4) != 'http')
@@ -226,7 +226,7 @@ class Mktgoo
 
     public function obtain_buy_url($domain)
     {
-        return sprintf('%s/modules/servers/MarketGoo/cPanelCheck/cPanelCheck.php?username=%s&domain=%s', $this->config['endpoint'], $this->username, $domain);
+        return sprintf('%s/modules/servers/marketgoo/cPanelCheck/cPanelCheck.php?username=%s&domain=%s', $this->config['endpoint'], $this->username, $domain);
     }
 
     public function get_buy_plans()
@@ -248,7 +248,7 @@ class Mktgoo
         }
 
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $this->config['endpoint'].'/modules/servers/MarketGoo/tokenCheck/getProductsFromAPI.php');
+        curl_setopt($ch, CURLOPT_URL, $this->config['endpoint'].'/modules/servers/marketgoo/tokenCheck/getProductsFromAPI.php');
         //curl_setopt($ch, CURLOPT_USERPWD, "dev29_test:mamejura");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, 1);

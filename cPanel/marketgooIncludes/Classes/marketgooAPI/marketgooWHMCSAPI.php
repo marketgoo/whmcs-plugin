@@ -17,10 +17,10 @@
  * * ******************************************************************
  */
 
-class MarketGooWHMCSAPI
+class MarketgooWHMCSAPI
 {
-    private $MarketGooApikey;
-    private $MarketGooDomain;
+    private $marketgooApikey;
+    private $marketgooDomain;
     private $WHMCSEndpoint;
 
     public function __construct($params)
@@ -30,26 +30,26 @@ class MarketGooWHMCSAPI
             
         $content = parse_ini_file($params->configFile);
         $this->WHMCSEndpoint = $content['endpoint'];
-        $this->MarketGooApikey = $content['marketapikey'];
-        $this->MarketGooDomain = $content['marketdomain'];
+        $this->marketgooApikey = $content['marketapikey'];
+        $this->marketgooDomain = $content['marketdomain'];
     }
 
     public function getRedirect($username, $domain)
     {
-        return sprintf('%s/modules/servers/MarketGoo/cPanelCheck/cPanelCheck.php?username=%s&domain=%s',
+        return sprintf('%s/modules/servers/marketgoo/cPanelCheck/cPanelCheck.php?username=%s&domain=%s',
                     $this->WHMCSEndpoint,
                     $username,
                     $domain);
     }
 
-    public function getMarketGooApikey()
+    public function getMarketgooApikey()
     {
-        return $this->MarketGooApikey;
+        return $this->marketgooApikey;
     }
 
-    public function getMarketGooDomain()
+    public function getMarketgooDomain()
     {
-        return $this->MarketGooDomain;
+        return $this->marketgooDomain;
     }
     
     public function getWHMCSEndpoint()

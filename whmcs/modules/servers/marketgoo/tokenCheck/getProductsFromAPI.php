@@ -24,7 +24,7 @@ if ($action == 'GetProducts' && $postToken && $postToken != '')
 
         $command  = 'GetProducts';
         $postData = [
-            'module' => 'MarketGoo'
+            'module' => 'marketgoo'
         ];
 
         $results = localAPI($command, $postData);

@@ -17,7 +17,7 @@
  * * ******************************************************************
  */
 
-class MarketGooAPI
+class MarketgooAPI
 {
 
     private $endpoint;
@@ -76,11 +76,11 @@ class MarketGooAPI
 
         if(curl_error($ch))
         {
-            logModuleCall('MarketGoo',$method, ['URL' => $url, 'CURL' => $curlParams], curl_error($ch));
+            logModuleCall('marketgoo',$method, ['URL' => $url, 'CURL' => $curlParams], curl_error($ch));
         }
         else
         {
-            logModuleCall('MarketGoo',$method, ['URL' => $url, 'CURL' => $curlParams], print_r($result, true));
+            logModuleCall('marketgoo',$method, ['URL' => $url, 'CURL' => $curlParams], print_r($result, true));
         }
 
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);

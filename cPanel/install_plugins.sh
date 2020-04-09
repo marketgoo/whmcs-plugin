@@ -7,7 +7,7 @@
 #   | | | | | | (_| | |  |   <  __/ || (_| | (_) | (_) |
 #   |_| |_| |_|\__,_|_|  |_|\_\___|\__\__, |\___/ \___/
 #                                      __/ |
-#   MarketGoo Plug-in for cPanel      |___/
+#   marketgoo Plug-in for cPanel      |___/
 #
 ##############################################################################
 
@@ -31,20 +31,20 @@ display_progress()
 install_libraries()
 {
     declare -a copyFiles=(
-        'MarketGooIncludes' '/usr/local/cpanel/share/MarketGoo'
+        'marketgooIncludes' '/usr/local/cpanel/share/marketgoo'
     )
-    configFile='/usr/local/cpanel/etc/MarketGoo.ini';
+    configFile='/usr/local/cpanel/etc/marketgoo.ini';
 
     echo -n "
 Enter WHMCS endpoint URL:
 :";
     read url;    
     echo -n "
-Enter MarketGoo Domain:
+Enter marketgoo Domain:
 :";
     read marketdomain;      
     echo -n "
-Enter MarketGoo Api Key:
+Enter marketgoo Api Key:
 :";
     read marketapikey;
 

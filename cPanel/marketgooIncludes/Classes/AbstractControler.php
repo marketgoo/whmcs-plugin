@@ -7,7 +7,7 @@ abstract class AbstractControler
     protected $type;
     protected $dir;
     protected $page;
-    public $configFile = '/usr/local/cpanel/etc/MarketGoo.ini';
+    public $configFile = '/usr/local/cpanel/etc/marketgoo.ini';
     public $baseUrlConfig = array(
         'html' => 'index.live.php'
     );

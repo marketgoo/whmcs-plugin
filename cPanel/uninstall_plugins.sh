@@ -7,7 +7,7 @@
 #   | | | | | | (_| | |  |   <  __/ || (_| | (_) | (_) |
 #   |_| |_| |_|\__,_|_|  |_|\_\___|\__\__, |\___/ \___/
 #                                      __/ |
-#   MarketGoo Plug-in for cPanel      |___/
+#   marketgoo Plug-in for cPanel      |___/
 #
 ##############################################################################
 
@@ -31,8 +31,8 @@ advance_progress()
 
 uninstall_libraries()
 {
-        rm -rf /usr/local/cpanel/share/MarketGoo
-        rm -f /usr/local/cpanel/etc/MarketGoo.ini
+        rm -rf /usr/local/cpanel/share/marketgoo
+        rm -f /usr/local/cpanel/etc/marketgoo.ini
 }
 
 uninstall_cpanel_plugin()

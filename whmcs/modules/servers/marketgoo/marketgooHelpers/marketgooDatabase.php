@@ -17,29 +17,7 @@
  * * ******************************************************************
  */
 
-class MarketGooAPIResponse
+class MarketgooDatabase
 {
-
-    public $raw;
-    
-    public function __construct($curlResponse)
-    {
-        $this->raw = $curlResponse;
-        $array = json_decode($this->raw, true);
-        if (json_last_error() == JSON_ERROR_NONE && is_array($array)) {
-            array_map(function($key, $value) {
-                $this->{$key} = $value;
-            }, $array);
-        }
-    }
-
-    public function __get($name)
-    {
-        if (property_exists($this, $name)) {
-            return $this->{$name};
-        } else {
-            return false;
-        }
-    }
-
+    //put your code here
 }

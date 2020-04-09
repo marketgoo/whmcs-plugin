@@ -10,13 +10,13 @@ $marketGooPlans = $mktgoo->get_buy_plans();
 //die;
 
 define("DS", DIRECTORY_SEPARATOR);
-define("MarketGoo_INCLUDES", '/usr/local/cpanel/share/MarketGoo/');
-require_once MarketGoo_INCLUDES.'MarketGooLoader.php';
+define("marketgoo_INCLUDES", '/usr/local/cpanel/share/marketgoo/');
+require_once marketgoo_INCLUDES.'marketgooLoader.php';
 
 $CPANEL = $mktgoo->cpanel;
-$marketGoo = new MarketGooMainController('CPanel', __DIR__);
+$marketGoo = new MarketgooMainController('CPanel', __DIR__);
 
-echo MarketGooDriver::localAPI()->getHeader();
+echo MarketgooDriver::localAPI()->getHeader();
 ?>
 <style type="text/css">
 
@@ -334,8 +334,8 @@ echo MarketGooDriver::localAPI()->getHeader();
 <div class="marketgoo-form">
     <img src="logo.png" class="logo" />
 
-    <h2><?php echo $mktgoo->translate("Get started today with our 6 SEO tools (free for life!) and we'll unlock the full potential of MarketGoo with a free 10 day trial!"); ?></h2>
-    <p><?php echo $mktgoo->translate("With our tools you will be able to <strong>submit your site</strong> to Google, <strong>improve your SEO</strong>, and enhance your overall <strong>online marketing strategy</strong>. Start increasing your revenue by receiving more <strong>qualified leads</strong> with MarketGoo!"); ?></p>
+    <h2><?php echo $mktgoo->translate("Get started today with our 6 SEO tools (free for life!) and we'll unlock the full potential of marketgoo with a free 10 day trial!"); ?></h2>
+    <p><?php echo $mktgoo->translate("With our tools you will be able to <strong>submit your site</strong> to Google, <strong>improve your SEO</strong>, and enhance your overall <strong>online marketing strategy</strong>. Start increasing your revenue by receiving more <strong>qualified leads</strong> with marketgoo!"); ?></p>
 
     <div class="row">
         <div class="col-lg-12">
@@ -381,11 +381,11 @@ echo MarketGooDriver::localAPI()->getHeader();
                                 <td>
                                     <?php if ($domain['status'] == 1): ?>
                                         <a href="<?php echo $domain['loginUrl'] ?>" target="_blank" class="btn btn-success">
-                                            <?php echo $mktgoo->translate('Login to MarketGoo') ?>
+                                            <?php echo $mktgoo->translate('Login to marketgoo') ?>
                                         </a>
                                     <?php else: ?>
                                         <a href="<?php echo $domain['buyUrl'].'&pid='.$marketGooPlans[0]['pid'] ?>" target="_blank" class="btn btn-orange buy_button">
-                                            <?php echo $mktgoo->translate('Buy Now MarketGoo') ?>
+                                            <?php echo $mktgoo->translate('Buy Now marketgoo') ?>
                                         </a>
                                     <?php endif ?>
                                 </td>
@@ -398,7 +398,7 @@ echo MarketGooDriver::localAPI()->getHeader();
     </div>
 
     <div class="screenshot">
-        <h3 class="preview-title"><?php echo $mktgoo->translate("MarketGoo is EASY to use"); ?></h3>
+        <h3 class="preview-title"><?php echo $mktgoo->translate("marketgoo is EASY to use"); ?></h3>
         <div class="diagrams">
 
             <img src="<?php echo $mktgoo->translate("screenshot_en.jpg"); ?>" width="600" height="429">
@@ -424,7 +424,7 @@ echo MarketGooDriver::localAPI()->getHeader();
         <div class="testimonial-text">
             <h3><?php echo $mktgoo->translate("Our customers feedback"); ?></h3>
             <p>
-                "<?php echo $mktgoo->translate("After using MarketGoo for some weeks, results are thriving. I've managed to beat my competitors in rankings that are of importance to me. The visit results I see on Google Analytics are growing and now I better understand how to improve my results. MarketGoo is an addictive app and easy to use. You do not need any technical knowledge but mostly it allows you to control the reach of your company’s branding, and there is none better suited for this task than yourself."); ?>"
+                "<?php echo $mktgoo->translate("After using marketgoo for some weeks, results are thriving. I've managed to beat my competitors in rankings that are of importance to me. The visit results I see on Google Analytics are growing and now I better understand how to improve my results. marketgoo is an addictive app and easy to use. You do not need any technical knowledge but mostly it allows you to control the reach of your company’s branding, and there is none better suited for this task than yourself."); ?>"
             </p>
             <p class="signature">
                 - Jose Sampayo <br/>
@@ -443,8 +443,8 @@ echo MarketGooDriver::localAPI()->getHeader();
     </div>
 
     <p class="mktgoo-footer">
-        <a href="http://www.marketgoo.com/" target="_blank"><?php echo $mktgoo->translate("MarketGoo home"); ?> &raquo;</a> |
-        <a href="http://www.marketgoo.com/easy-seo-tool/what-is-marketgoo" target="_blank"><?php echo $mktgoo->translate("Learn more about MarketGoo"); ?> &raquo;</a>
+        <a href="http://www.marketgoo.com/" target="_blank"><?php echo $mktgoo->translate("marketgoo home"); ?> &raquo;</a> |
+        <a href="http://www.marketgoo.com/easy-seo-tool/what-is-marketgoo" target="_blank"><?php echo $mktgoo->translate("Learn more about marketgoo"); ?> &raquo;</a>
     </p>
 
 </div>
@@ -471,4 +471,4 @@ echo MarketGooDriver::localAPI()->getHeader();
 //    });
 </script>
 
-<?php echo MarketGooDriver::localAPI()->getFooter(); ?>
+<?php echo MarketgooDriver::localAPI()->getFooter(); ?>

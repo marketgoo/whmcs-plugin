@@ -29,7 +29,7 @@ class cPanelCheckDatabase
     public static function getAccountDetails($username, $domain)
     {
         $userId = PDOWrapper::real_escape_string(self::getUserId($username, $domain));
-        $id = PDOWrapper::real_escape_string(self::getMarketGooServer());
+        $id = PDOWrapper::real_escape_string(self::getMarketgooServer());
         $result = PDOWrapper::query("SELECT username, server, domainstatus FROM tblhosting WHERE server ='" . $id . "' AND userid='" . $userId . "' LIMIT 1");
         return PDOWrapper::fetch_assoc($result);
     }
@@ -43,9 +43,9 @@ class cPanelCheckDatabase
         return isset($return['userid']) ? $return['userid'] : false;
     }
 
-    private static function getMarketGooServer()
+    private static function getMarketgooServer()
     {
-        $result = PDOWrapper::query("SELECT id FROM tblservers WHERE type='MarketGoo' LIMIT 1");
+        $result = PDOWrapper::query("SELECT id FROM tblservers WHERE type='marketgoo' LIMIT 1");
         $id = PDOWrapper::fetch_assoc($result);
         return $id['id'];
     }
