@@ -124,39 +124,35 @@ if (isset($_REQUEST['gencustfield']) && $_REQUEST['gencustfield'] == 'true')
 
 function marketgoo_ConfigOptions($params)
 {
-    $customOptions = [
-        ['fieldkey' => 'cpanel_username'],
-        ['fieldkey' => 'domain']
+    //make  a request to marketgoo api to get the available product types
+    $serverDataRaw = Capsule::table('tblservers')
+        ->select('hostname', 'password')
+        ->where('type', '=', 'marketgoo')
+        ->first();
+
+    $serverData = [
+        'serverhostname' => $serverDataRaw->hostname,
+        'serverpassword' => decrypt($serverDataRaw->password),
     ];
 
-    $conf   = new ConfigurableOptionsGenerator($_REQUEST['id'], 'marketgoo');
-    $custom = new CustomFieldGenerator($_REQUEST['id'], 'marketgoo');
-    
-    if ($conf->checkIfAlreadyGenerated() && $custom->checkIfAlreadyGenerated($customOptions))
+    //initialize marketgoo API
+    $marketgoo  = new MarketgooProvisioning($serverData);
+    $products   = $marketgoo->getProductsList();
+    $options = [];
+    var_dump($products);
+
+    foreach ($products as $product)
     {
-        $configarray = [
-            "username" => [
-                "FriendlyName" => " ", //Generate Custom Fields and Configurable Options
-                "Description"  => '<td colspan=4><div class="infobox" style="margin: 0"><strong><span class="title">Additional Fields Already Generated</span></strong></div></td>',
-            ]
-        ];
-
-        return $configarray;
+        $options[$product['key']] = $product['name'];
     }
-    else
-    {
-        $url = sprintf('configproducts.php?action=%s&id=%s&tab=3&gencustfield=true&success=true', 'edit', $_REQUEST['id']);
-
-        $configarray = [
-            "username" => [
-                "FriendlyName" => " ", //Generate Custom Fields and Configurable Options
-                "Description"  => '<a href="'.$url.'" class="btn btn-primary">Generate Additional Fields</a>',
-            ]
-        ];
-    }
-
-    return $configarray;
-}
+    return [
+        "product" => [
+            "FriendlyName" => "Product",
+            "Type" => "radio",
+            "Options" => $options,
+            "Description" => "Choose the marketgoo Product",
+        ],
+    ];
 
 function marketgoo_CreateAccount($params)
 {
