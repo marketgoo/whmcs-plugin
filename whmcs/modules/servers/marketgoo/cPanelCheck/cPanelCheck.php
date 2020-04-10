@@ -17,9 +17,9 @@
  * * ******************************************************************
  */
 
-require_once '../marketgooAPI/marketgooAPI.php';
+require_once '../marketgooAPI/MarketgooAPI.php';
 require_once '../marketgooHelpers/cPanelCheckDatabase.php';
-require_once '../marketgooProvisioning/marketgooProvisioning.php';
+require_once '../marketgooProvisioning/MarketgooProvisioning.php';
 
 class cPanelCheck
 {
