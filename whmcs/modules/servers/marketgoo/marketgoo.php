@@ -143,6 +143,7 @@ function marketgoo_ConfigOptions($params)
     {
         $options[$product['key']] = $product['name'];
     }
+    logModuleCall('marketgoo', 'ConfigOptions', 'request', 'response', $options, '');
     return [
         "product" => [
             "FriendlyName" => "Product",
@@ -212,6 +213,7 @@ function marketgoo_CreateAccount($params)
         {
             $marketgoo->addKeywords($accountId, $params['configoptions']['keywords']);
         }
+        logModuleCall('marketgoo', 'CreateAccount', $params, 'response', $accountId, '');
 
         return 'success';
     }
