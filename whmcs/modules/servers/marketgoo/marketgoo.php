@@ -139,8 +139,6 @@ function marketgoo_ConfigOptions($params)
     $marketgoo  = new MarketgooProvisioning($serverData);
     $products   = $marketgoo->getProductsList();
     $options = [];
-    var_dump($products);
-
     foreach ($products as $product)
     {
         $options[$product['key']] = $product['name'];
@@ -153,6 +151,7 @@ function marketgoo_ConfigOptions($params)
             "Description" => "Choose the marketgoo Product",
         ],
     ];
+}
 
 function marketgoo_CreateAccount($params)
 {
