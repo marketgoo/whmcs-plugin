@@ -137,7 +137,7 @@ function marketgoo_ConfigOptions($params)
         $configarray = [
             "username" => [
                 "FriendlyName" => " ", //Generate Custom Fields and Configurable Options
-                "Description"  => '<td colspan=4><div class="infobox" style="margin: 0"><strong><span class="title">Addtional Fields Already Generated</span></strong></div></td>',
+                "Description"  => '<td colspan=4><div class="infobox" style="margin: 0"><strong><span class="title">Additional Fields Already Generated</span></strong></div></td>',
             ]
         ];
 
@@ -150,7 +150,7 @@ function marketgoo_ConfigOptions($params)
         $configarray = [
             "username" => [
                 "FriendlyName" => " ", //Generate Custom Fields and Configurable Options
-                "Description"  => '<a href="'.$url.'" class="btn btn-primary">Generate Addtional Fields</a>',
+                "Description"  => '<a href="'.$url.'" class="btn btn-primary">Generate Additional Fields</a>',
             ]
         ];
     }
@@ -181,16 +181,16 @@ function marketgoo_CreateAccount($params)
             {
                 $marketgoo->terminate($accountId);
 
-                return 'Error when connecting to the cPanel!';
+                return 'Error connecting to cPanel!';
             }
         }
         catch (Exception $ex)
         {
-            logModuleCall('marketgoo', 'Errro when connecting to the cPanel!', $ex->getMessage(), $ex);
+            logModuleCall('marketgoo', 'Error connecting to cPanel!', $ex->getMessage(), $ex);
 
             $marketgoo->terminate($accountId);
             
-            return "Error when connecting to the cPanel";
+            return "Error connecting to cPanel";
         }
 
         $vars = [
@@ -208,9 +208,9 @@ function marketgoo_CreateAccount($params)
             $marketgoo->terminate($accountId);
             $cpanel->sendUuid('terminate');
 
-            logModuleCall('marketgoo', 'Errro when updateing WHMCS product!', $vars, $result);
+            logModuleCall('marketgoo', 'Error when updating WHMCS product!', $vars, $result);
 
-            return 'Errro when updateing WHMCS product!';
+            return 'Error when updating WHMCS product!';
         }
 
         if (!empty($accountId) && isset($params['configoptions']['keywords']) && $params['configoptions']['keywords'] > 0)
@@ -222,7 +222,7 @@ function marketgoo_CreateAccount($params)
     }
     catch (Exception $e)
     {
-        logModuleCall('marketgoo', 'Errro when creating marketgoo account!', $e->getMessage(), $e);
+        logModuleCall('marketgoo', 'Error when creating marketgoo account!', $e->getMessage(), $e);
 
         return $e->getMessage();
     }
