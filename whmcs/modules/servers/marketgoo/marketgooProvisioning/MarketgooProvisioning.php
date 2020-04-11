@@ -32,8 +32,8 @@ class MarketgooProvisioning
         $response = $this->marketgooAPI->post([
             'request'     => ['accounts' => ''],
             'additional'  => [
-                'product' => $params['configoptions']['producttype'],
-                'domain'  => $params['customfields']['domain'],
+                'product' => $params['configoption1'],
+                'domain'  => $params['serverhostname'],
                 'name'    => $params['clientsdetails']['fullname'],
                 'email'   => $params['clientsdetails']['email']
             ]
