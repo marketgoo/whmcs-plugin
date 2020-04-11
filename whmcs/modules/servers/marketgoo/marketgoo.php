@@ -156,6 +156,7 @@ function marketgoo_ConfigOptions($params)
 
 function marketgoo_CreateAccount($params)
 {
+    logModuleCall('marketgoo', 'CreateAccount', $params, 'response', $params);
     try
     {
         $marketgoo = new MarketgooProvisioning($params);
@@ -165,7 +166,9 @@ function marketgoo_CreateAccount($params)
         
         if (empty($accountId) || !$accountId || $accountId == '')
         {
-            return 'Error when creating marketgoo account!';
+            $message = 'Error when creating marketgoo account';
+            logModuleCall('marketgoo', 'CreateAccount', $params, $message, $message);
+            return $message;
         }
         
         try
@@ -176,16 +179,15 @@ function marketgoo_CreateAccount($params)
             if (!$cPanelAccount || $cPanelAccount == '')
             {
                 $marketgoo->terminate($accountId);
-
-                return 'Error connecting to cPanel!';
+                $message = 'Error connecting to cPanel';
+                logModuleCall('marketgoo', 'CreateAccount', $params, $message, $message);
+                return $message;
             }
         }
         catch (Exception $ex)
         {
-            logModuleCall('marketgoo', 'Error connecting to cPanel!', $ex->getMessage(), $ex);
-
+            logModuleCall('marketgoo', 'CreateAccount', $ex->getMessage(), $ex);
             $marketgoo->terminate($accountId);
-            
             return "Error connecting to cPanel";
         }
 
@@ -203,24 +205,20 @@ function marketgoo_CreateAccount($params)
             //delete cPanel and marketgoo
             $marketgoo->terminate($accountId);
             $cpanel->sendUuid('terminate');
-
-            logModuleCall('marketgoo', 'Error when updating WHMCS product!', $vars, $result);
-
-            return 'Error when updating WHMCS product!';
+            $message = 'Error when updating WHMCS product';
+            logModuleCall('marketgoo', 'CreateAccount', $vars, $message, $result);
+            return $message;
         }
-
         if (!empty($accountId) && isset($params['configoptions']['keywords']) && $params['configoptions']['keywords'] > 0)
         {
             $marketgoo->addKeywords($accountId, $params['configoptions']['keywords']);
         }
-        logModuleCall('marketgoo', 'CreateAccount', $params, 'response', $accountId, '');
-
+        logModuleCall('marketgoo', 'CreateAccount', $params, 'success', $accountId);
         return 'success';
     }
     catch (Exception $e)
     {
-        logModuleCall('marketgoo', 'Error when creating marketgoo account!', $e->getMessage(), $e);
-
+        logModuleCall('marketgoo', 'CreateAccount', $params, $e->getMessage(), $e);
         return $e->getMessage();
     }
 }
