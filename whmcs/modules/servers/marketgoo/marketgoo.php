@@ -143,11 +143,11 @@ function marketgoo_ConfigOptions($params)
     {
         $options[$product['key']] = $product['name'];
     }
-    logModuleCall('marketgoo', 'ConfigOptions', 'request', 'response', $options, '');
+    logModuleCall('marketgoo', 'ConfigOptions', $params, 'response', $options);
     return [
         "product" => [
             "FriendlyName" => "Product",
-            "Type" => "radio",
+            "Type" => "dropdown",
             "Options" => $options,
             "Description" => "Choose the marketgoo Product",
         ],
