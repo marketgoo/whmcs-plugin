@@ -269,21 +269,18 @@ function marketgoo_ServiceSingleSignOn(array $params)
 
 function marketgoo_ClientArea($params)
 {
+    logModuleCall('marketgoo', 'ClientArea', $params, 'enter', 'enter');
     try
     {
         $marketgoo = new MarketgooProvisioning($params);
-
-        if (isset($_POST['uid']) && !empty($_POST['uid']) && $_POST['uid'] == $params['userid'])
-        {
-            $loginLink = $marketgoo->login($params['username']);
-
-            header('Location: ' . $loginLink);
-            die();
-        }
+        $loginLink = $marketgoo->login($params['username']);
 
         return [
             'templatefile' => 'clientarea',
-            'vars'         => ['uid' => $params['userid']]
+            'vars'         => [
+                'uid' => $params['username'],
+                'target' => $loginLink,
+            ]
         ];
     }
     catch (Exception $e)
