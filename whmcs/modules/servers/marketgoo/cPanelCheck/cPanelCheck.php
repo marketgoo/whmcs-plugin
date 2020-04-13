@@ -57,6 +57,7 @@ class cPanelCheck
             {
                 $link = cPanelCheckDatabase::generateCartLink($endpoint, $domain, $username, $pid);
             }
+            logModuleCall('marketgoo', 'cPanelCheck', $_GET, $link, $link);
 
             header('Location: '.$link);
             exit();

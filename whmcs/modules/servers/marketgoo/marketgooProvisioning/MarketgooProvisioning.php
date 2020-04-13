@@ -33,7 +33,7 @@ class MarketgooProvisioning
             'request'     => ['accounts' => ''],
             'additional'  => [
                 'product' => $params['configoption1'],
-                'domain'  => $params['serverhostname'],
+                'domain'  => $_SESSION['marketgoo']['domain'],
                 'name'    => $params['clientsdetails']['fullname'],
                 'email'   => $params['clientsdetails']['email']
             ]

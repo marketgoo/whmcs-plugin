@@ -62,7 +62,7 @@ class cPanelCheckDatabase
     {
         $cpanelHosting = self::findCpanelServer($username);
 
-        $_SESSION['marketgoo'][$cpanelHosting['user_id']] = array(
+        $_SESSION['marketgoo'] = array(
             'username' => $username,
             'domain' => $domain,
             'product_id' => $pid,
@@ -71,6 +71,7 @@ class cPanelCheckDatabase
                 'domain' => self::getCustomFieldID($pid, 'domain')
             )
         );
+        logModuleCall('marketgoo', 'generateCartLink', $endpoint, $cPanelHosting['user_id'], $cPanelHosting);
 
         return $endpoint . '/cart.php?a=add&pid=' . $pid;
     }
