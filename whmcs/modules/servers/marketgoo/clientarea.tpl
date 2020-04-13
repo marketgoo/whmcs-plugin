@@ -1,4 +1,1 @@
-<form method="POST" action="{$target}" target="_blank">
-    <input type="hidden" name="uid" value="{$uid}"/>
-    <input type="submit" class="btn btn-primary" name="createToken" value="Login To marketgoo"/>
-</form>
+<a class="btn btn-primary" href="{$target}" target="_blank">Login to marketgoo</a>
