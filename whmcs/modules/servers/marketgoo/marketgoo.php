@@ -160,7 +160,6 @@ function marketgoo_CreateAccount($params)
     try
     {
         $marketgoo = new MarketgooProvisioning($params);
-        $cpanel    = new Servers\Marketgoo\Cpanel\Cpanel($params);
 
         $accountId = $marketgoo->create($params);
         
@@ -169,26 +168,6 @@ function marketgoo_CreateAccount($params)
             $message = 'Error when creating marketgoo account';
             logModuleCall('marketgoo', 'CreateAccount', $params, $message, $message);
             return $message;
-        }
-        
-        try
-        {
-            //create account on cPanel
-            $cPanelAccount = $cpanel->sendUuid($accountId);
-
-            if (!$cPanelAccount || $cPanelAccount == '')
-            {
-                $marketgoo->terminate($accountId);
-                $message = 'Error connecting to cPanel';
-                logModuleCall('marketgoo', 'CreateAccount', $params, $message, $message);
-                return $message;
-            }
-        }
-        catch (Exception $ex)
-        {
-            logModuleCall('marketgoo', 'CreateAccount', $ex->getMessage(), $ex);
-            $marketgoo->terminate($accountId);
-            return "Error connecting to cPanel";
         }
 
         $vars = [
@@ -204,14 +183,9 @@ function marketgoo_CreateAccount($params)
         {
             //delete cPanel and marketgoo
             $marketgoo->terminate($accountId);
-            $cpanel->sendUuid('terminate');
             $message = 'Error when updating WHMCS product';
             logModuleCall('marketgoo', 'CreateAccount', $vars, $message, $result);
             return $message;
-        }
-        if (!empty($accountId) && isset($params['configoptions']['keywords']) && $params['configoptions']['keywords'] > 0)
-        {
-            $marketgoo->addKeywords($accountId, $params['configoptions']['keywords']);
         }
         logModuleCall('marketgoo', 'CreateAccount', $params, 'success', $accountId);
         return 'success';
@@ -228,10 +202,8 @@ function marketgoo_TerminateAccount($params)
     try
     {
         $marketgoo = new MarketgooProvisioning($params);
-        $cpanel    = new Servers\Marketgoo\Cpanel\Cpanel($params);
         
         $marketgoo->terminate($params['username']);
-        $cpanel->sendUuid('terminate');
         
         return 'success';
     }
@@ -246,10 +218,8 @@ function marketgoo_SuspendAccount($params)
     try
     {
         $marketgoo = new MarketgooProvisioning($params);
-        $cpanel    = new Servers\Marketgoo\Cpanel\Cpanel($params);
 
         $marketgoo->suspend($params['username']);
-        $cpanel->sendUuid('terminate');
 
         return 'success';
     }
@@ -264,10 +234,8 @@ function marketgoo_UnsuspendAccount($params)
     try
     {
         $marketgoo = new MarketgooProvisioning($params);
-        $cpanel    = new Servers\Marketgoo\Cpanel\Cpanel($params);
 
         $marketgoo->unsuspend($params['username']);
-        $cpanel->sendUuid($params['username']);
 
         return 'success';
     }
