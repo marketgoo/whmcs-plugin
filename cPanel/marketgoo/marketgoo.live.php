@@ -199,7 +199,7 @@ class Mktgoo
                 'uuid'       => $uuid,
                 'domainName' => $domain,
                 'buyUrl'     => $this->obtain_buy_url($domain),
-                'loginUrl'   => $this->obtain_login_url($domain),
+                'loginUrl'   => '',//$this->obtain_login_url($domain),
                 'pid'        => $pid
             ];
         }
