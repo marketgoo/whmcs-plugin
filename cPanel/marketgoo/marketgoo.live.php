@@ -231,8 +231,11 @@ class Mktgoo
 
     public function get_buy_plans()
     {
-        $plans = [];
-        
+        $plans = invokeWhmcs('GetProducts');
+    }
+
+    private function invokeWhmcs($action, $additional = [])
+    {
         if (file_exists('token.php'))
         {
             include 'token.php';
@@ -247,19 +250,16 @@ class Mktgoo
             return [];
         }
 
+        $params = array_merge($additional, [
+            'action' => $action,
+            'token'  => $token,
+        ]);
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $this->config['endpoint'].'/modules/servers/marketgoo/tokenCheck/getProductsFromAPI.php');
-        //curl_setopt($ch, CURLOPT_USERPWD, "dev29_test:mamejura");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS,
-            http_build_query(
-                [
-                    'action' => 'GetProducts',
-                    'token'  => $token
-                ]
-            )
-        );
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($params));
 
         $response = curl_exec($ch);
         
