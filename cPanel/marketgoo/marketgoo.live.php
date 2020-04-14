@@ -231,7 +231,20 @@ class Mktgoo
 
     public function get_buy_plans()
     {
-        $plans = invokeWhmcs('GetProducts');
+        $plans = [];
+        $response = invokeWhmcs('GetProducts');
+        if (!isset($response['result']) || $response['result'] != "success")
+        {
+            return $plans;
+        }
+        foreach ($response['products'] as $products)
+        {
+            foreach ($products as $product)
+            {
+                $plans[] = $product;
+            }
+        }
+        return $plans;
     }
 
     private function invokeWhmcs($action, $additional = [])
@@ -249,43 +262,24 @@ class Mktgoo
         {
             return [];
         }
-
         $params = array_merge($additional, [
             'action' => $action,
             'token'  => $token,
         ]);
-
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $this->config['endpoint'].'/modules/servers/marketgoo/tokenCheck/getProductsFromAPI.php');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($params));
-
         $response = curl_exec($ch);
         
         if (curl_error($ch) && curl_error($ch) != "")
         {
-            return $plans;
+            return [];
         }
-
         curl_close($ch);
 
-        $responseArray = json_decode($response, true);
-        
-        if (isset($responseArray['result']) && $responseArray['result'] == "success")
-        {
-            foreach ($responseArray['products'] as $products)
-            {
-                foreach ($products as $product)
-                {
-                    $plans[] = $product;
-                }
-            }
-
-            return $plans;
-        }
-
-        return $plans;
+        return json_decode($response, true);
     }
 
     public function obtain_login_url($domain)
