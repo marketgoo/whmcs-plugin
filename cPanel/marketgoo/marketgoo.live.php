@@ -220,30 +220,24 @@ class Mktgoo
             return [];
         }
         $plans = [];
-        foreach ($response['products'] as $products)
+        foreach ($response['products']['product'] as $product)
         {
-            foreach ($products as $product)
-            {
-                $plans[] = $product;
-            }
+            $plans[] = $product;
         }
         return $plans;
     }
 
     public function get_active_plans()
     {
-        $response = invokeWhmcs('GetActiveProducts', ['username' => $this->username]);
+        $response = invokeWhmcs('GetClientsProducts', ['username' => $this->username]);
         if (!isset($response['result']) || $response['result'] != "success")
         {
             return $plans;
         }
         $plans = [];
-        foreach ($response['products'] as $products)
+        foreach ($response['products'] as $product)
         {
-            foreach ($products as $product)
-            {
-                $plans[] = $product;
-            }
+            $plans[] = $product;
         }
         return $plans;
     }
