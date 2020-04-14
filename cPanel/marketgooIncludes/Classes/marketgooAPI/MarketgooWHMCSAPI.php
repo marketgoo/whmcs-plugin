@@ -19,8 +19,6 @@
 
 class MarketgooWHMCSAPI
 {
-    private $marketgooApikey;
-    private $marketgooDomain;
     private $WHMCSEndpoint;
 
     public function __construct($params)
@@ -30,8 +28,6 @@ class MarketgooWHMCSAPI
             
         $content = parse_ini_file($params->configFile);
         $this->WHMCSEndpoint = $content['endpoint'];
-        $this->marketgooApikey = $content['marketapikey'];
-        $this->marketgooDomain = $content['marketdomain'];
     }
 
     public function getRedirect($username, $domain)
@@ -40,16 +36,6 @@ class MarketgooWHMCSAPI
                     $this->WHMCSEndpoint,
                     $username,
                     $domain);
-    }
-
-    public function getMarketgooApikey()
-    {
-        return $this->marketgooApikey;
-    }
-
-    public function getMarketgooDomain()
-    {
-        return $this->marketgooDomain;
     }
     
     public function getWHMCSEndpoint()

@@ -31,10 +31,10 @@ class Mktgoo
             $this->domains = $this->get_domains();
         }
 
-        $this->chech_if_want_to_login();
+        $this->check_if_want_to_login();
     }
 
-    public function chech_if_want_to_login()
+    public function check_if_want_to_login()
     {
         if (isset($_GET['domain']) && !empty($_GET['domain']) && isset($_GET['sso']) && $_GET['sso'] == 1)
         {
@@ -149,7 +149,7 @@ class Mktgoo
     public function open_site($domain)
     {
         $link = $this->marketgooRequest(
-            'get', ['login' => $this->container->offsetGet($domain)], ['additional' => ['expires' => 30]], $this->config['marketdomain'], $this->config['marketapikey']
+            'get', ['login' => $this->container->offsetGet($domain)], ['additional' => ['expires' => 30]]
         );
         header("Location: ".$link);
         die();

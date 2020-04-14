@@ -24,8 +24,6 @@ TEMPDIR=/
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 url=$1
-marketdomain=$2
-marketapikey=$3
 
 display_progress()
 {
@@ -46,25 +44,9 @@ Enter WHMCS endpoint URL:
 :";
         read url;
     fi
-    if [ -z "$marketdomain" ]
-    then
-        echo -n "
-Enter marketgoo Domain:
-:";
-        read marketdomain;
-    fi
-    if [ -z "$marketapikey" ]
-    then
-        echo -n "
-Enter marketgoo Api Key:
-:";
-        read marketapikey;
-    fi
 
     echo "
     endpoint='$url'
-    marketdomain='$marketdomain'
-    marketapikey='$marketapikey'
     " > "$configFile"
 
     for dir in "${copyFiles[@]}"
