@@ -31,15 +31,6 @@ class Mktgoo
             $this->domains = $this->get_domains();
         }
 
-        $this->check_if_want_to_login();
-    }
-
-    public function check_if_want_to_login()
-    {
-        if (isset($_GET['domain']) && !empty($_GET['domain']) && isset($_GET['sso']) && $_GET['sso'] == 1)
-        {
-            $this->open_site($_GET['domain']);
-        }
     }
 
     public function load_config()
@@ -146,15 +137,6 @@ class Mktgoo
         return !empty($this->uuid);
     }
 
-    public function open_site($domain)
-    {
-        $link = $this->marketgooRequest(
-            'get', ['login' => $this->container->offsetGet($domain)], ['additional' => ['expires' => 30]]
-        );
-        header("Location: ".$link);
-        die();
-    }
-
     function set_data($key, $value)
     {
         $rc = $this->cpanel->api1("NVData", "set", [$key, $value]);
@@ -206,6 +188,7 @@ class Mktgoo
     public function hydrate_domains(array $domains)
     {
         $hydrated = [];
+        $active = get_active_plans();
 
         foreach ($domains as $domain)
         {
@@ -231,12 +214,30 @@ class Mktgoo
 
     public function get_buy_plans()
     {
-        $plans = [];
         $response = $this->invokeWhmcs('GetProducts');
+        if (!isset($response['result']) || $response['result'] != "success")
+        {
+            return [];
+        }
+        $plans = [];
+        foreach ($response['products'] as $products)
+        {
+            foreach ($products as $product)
+            {
+                $plans[] = $product;
+            }
+        }
+        return $plans;
+    }
+
+    public function get_active_plans()
+    {
+        $response = invokeWhmcs('GetActiveProducts', ['username' => $this->username]);
         if (!isset($response['result']) || $response['result'] != "success")
         {
             return $plans;
         }
+        $plans = [];
         foreach ($response['products'] as $products)
         {
             foreach ($products as $product)
@@ -271,6 +272,7 @@ class Mktgoo
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($params));
+
         $response = curl_exec($ch);
         
         if (curl_error($ch) && curl_error($ch) != "")
@@ -280,11 +282,6 @@ class Mktgoo
         curl_close($ch);
 
         return json_decode($response, true);
-    }
-
-    public function obtain_login_url($domain)
-    {
-        return $_SERVER['SCRIPT_URI'].'?sso=1&domain='.$domain;
     }
 
     public function validate_uuid($uuid)
