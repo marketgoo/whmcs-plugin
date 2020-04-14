@@ -34,33 +34,70 @@ function generateResponse()
 	$action = filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING);
 	if ($action == 'GetProducts')
 	{
-		$postData = [
-			'module' => 'marketgoo'
-		];
+        $products = getProducts();
 
-		$results = localAPI($action, $postData);
+        logModuleCall('marketgoo', $action, $postData, 'response', $products);
 
-		$resultToReturn = json_encode($results);
-
-		echo $resultToReturn;
+		echo json_encode($products);
 	}
 	elseif ($action == 'GetClientsProducts')
-	{
-		$postData = [
-			'module' => 'marketgoo'
+    {
+        $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
+        $postData = [
+            'username2' => $username,
 		];
+        $clientProducts = localAPI($action, $postData);
+        if ($clientProducts['result'] != 'success')
+        {
+            logModuleCall('marketgoo', $action, $postData, 'response', $clientProducts);
+            echo json_encode($clientProducts);
+            return;
+        }
+        $products = getProducts();
+        if ($products['result'] != 'success')
+        {
+            logModuleCall('marketgoo', $action, $postData, 'response', $products);
+            echo json_encode($products);
+            return;
+        }
+        $dict = [];
+        foreach ($products['products']['product'] as $product)
+        {
+            $dict[$product['pid']] = $product;
+        }
+            
+        $filtered = [];
+        foreach ($clientProducts['products']['product'] as $product)
+        {
+            if ($product['username'] == $username)
+            {
+                if (isset($dict[$product['pid']]))
+                {
+                    $filtered[] = $product;
+                }
+            }
+        }
+        $result = [
+            'result' => 'success',
+            'products' => $filtered,
+        ];
+        logModuleCall('marketgoo', $action, $postData, 'response', $result);
 
-		$results = localAPI($action, $postData);
-
-		$resultToReturn = json_encode($results);
-
-		echo $resultToReturn;
+        echo json_encode($result);
 	}
 	else
 	{
 		$error = ["result" => "error", "message" => "Unknown action"];
 		echo json_encode($error);
 	}
+}
+
+function getProducts()
+{
+    $postData = [
+        'module' => 'marketgoo'
+    ];
+    return localAPI('GetProducts', $postData);
 }
 
 generateResponse();
