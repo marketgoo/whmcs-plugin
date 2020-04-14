@@ -188,7 +188,7 @@ class Mktgoo
     public function hydrate_domains(array $domains)
     {
         $hydrated = [];
-        $active = get_active_plans();
+        //$active = $this->get_active_plans();
 
         foreach ($domains as $domain)
         {
