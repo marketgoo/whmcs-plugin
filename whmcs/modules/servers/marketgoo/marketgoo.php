@@ -170,17 +170,12 @@ function marketgoo_CreateAccount($params)
             return $message;
         }
 
-		$customfields = [
-			'domain' => $_SESSION['marketgoo']['domain'],
-			'username' => $_SESSION['marketgoo']['username'],
-		];
         $vars = [
             'serviceid'       => $params['serviceid'],
-            'serviceusername' => $accountId,
-			'servicepassword' => ' ',
-			'customfields'    => base64_encode(serialize($customfields)),
+            'serviceusername' => $_SESSION['marketgoo']['username'],
+            'domain'          => $_SESSION['marketgoo']['domain'],
+			'servicepassword' => $accountId,
         ];
-
         $result = localAPI('UpdateClientProduct', $vars);
         
         //check if WHMCS api error
@@ -277,7 +272,7 @@ function marketgoo_ClientArea($params)
     try
     {
         $marketgoo = new MarketgooProvisioning($params);
-        $loginLink = $marketgoo->login($params['username']);
+        $loginLink = $marketgoo->login($params['password']);
 
         logModuleCall('marketgoo', 'ClientArea', $params, $loginLink, $loginLink);
 
