@@ -170,10 +170,15 @@ function marketgoo_CreateAccount($params)
             return $message;
         }
 
+		$customfields = [
+			'domain' => $_SESSION['marketgoo']['domain'],
+			'username' => $_SESSION['marketgoo']['username'],
+		];
         $vars = [
             'serviceid'       => $params['serviceid'],
             'serviceusername' => $accountId,
-            'servicepassword' => ' '
+			'servicepassword' => ' ',
+			'customfields'    => base64_encode(serialize($customfields)),
         ];
 
         $result = localAPI('UpdateClientProduct', $vars);
