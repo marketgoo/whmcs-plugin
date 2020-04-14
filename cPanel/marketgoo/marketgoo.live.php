@@ -232,7 +232,7 @@ class Mktgoo
     public function get_buy_plans()
     {
         $plans = [];
-        $response = invokeWhmcs('GetProducts');
+        $response = $this->invokeWhmcs('GetProducts');
         if (!isset($response['result']) || $response['result'] != "success")
         {
             return $plans;
