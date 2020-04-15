@@ -125,12 +125,15 @@ function marketgoo_TerminateAccount($params)
     {
         $marketgoo = new MarketgooProvisioning($params);
         
-        $marketgoo->terminate($params['username']);
+        $result = $marketgoo->terminate($params['username']);
+
+        logModuleCall('marketgoo', 'TerminateAccount', $params, 'success', $result);
         
         return 'success';
     }
     catch (Exception $e)
     {
+        logModuleCall('marketgoo', 'TerminateAccount', $params, $e->getMessage(), $e);
         return $e->getMessage();
     }
 }
@@ -141,12 +144,15 @@ function marketgoo_SuspendAccount($params)
     {
         $marketgoo = new MarketgooProvisioning($params);
 
-        $marketgoo->suspend($params['username']);
+        $result = $marketgoo->suspend($params['username']);
+
+        logModuleCall('marketgoo', 'SuspendAccount', $params, 'success', $result);
 
         return 'success';
     }
     catch (Exception $e)
     {
+        logModuleCall('marketgoo', 'SuspendAccount', $params, $e->getMessage(), $e);
         return $e->getMessage();
     }
 }
@@ -157,36 +163,41 @@ function marketgoo_UnsuspendAccount($params)
     {
         $marketgoo = new MarketgooProvisioning($params);
 
-        $marketgoo->unsuspend($params['username']);
+        $result = $marketgoo->unsuspend($params['username']);
+
+        logModuleCall('marketgoo', 'SuspendAccount', $params, 'success', $result);
 
         return 'success';
     }
     catch (Exception $e)
     {
+        logModuleCall('marketgoo', 'UnsuspendAccount', $params, $e->getMessage(), $e);
         return $e->getMessage();
     }
 }
 
 function marketgoo_ServiceSingleSignOn(array $params)
 {
-    $return = ['success' => false];
-
     try
     {
         $marketgoo = new MarketgooProvisioning($params);
         $loginLink = $marketgoo->login($params['password']);
 
-        $return = [
+        logModuleCall('marketgoo', 'ServiceSingleSignOn', $params, 'success', $loginLink);
+
+        return [
             'success'    => true,
             'redirectTo' => $loginLink,
         ];
     }
     catch (Exception $e)
     {
-        $return['errorMsg'] = $e->getMessage();
+        logModuleCall('marketgoo', 'ServiceSingleSignOn', $params, $e->getMessage(), $e);
+        return [
+            'success' => false,
+            'errorMsg' => $e->getMessage(),
+        ];
     }
-
-    return $return;
 }
 
 function marketgoo_ClientArea($params)
@@ -220,18 +231,20 @@ function marketgoo_ChangePackage($params)
 
         if (isset($params['configoptions']['producttype']))
         {
-            $marketgoo->changeProduct($params['username'], $params['configoptions']['producttype']);
+            $result = $marketgoo->changeProduct($params['username'], $params['configoptions']['producttype']);
         }
 
         if (isset($params['configoptions']['keywords']))
         {
-            $marketgoo->updateAddon($params['username'], $params['configoptions']['keywords']);
+            $result = $marketgoo->updateAddon($params['username'], $params['configoptions']['keywords']);
         }
+        logModuleCall('marketgoo', 'ChangePackage', $params, 'success', $result);
 
         return "success";
     }
     catch (Exception $e)
     {
+        logModuleCall('marketgoo', 'ChangePackage', $params, $e->getMessage(), $e);
         return $e->getMessage();
     }
 }
