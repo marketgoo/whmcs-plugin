@@ -1,6 +1,7 @@
 <?php
 
 require_once '../marketgooProvisioning/MarketgooProvisioning.php';
+require_once '../marketgooHelpers/cPanelCheckDatabase.php';
 
 function generateResponse()
 {
@@ -102,12 +103,12 @@ function getProducts()
 
 function getLoginLink($product)
 {
-    $servers = localAPI('GetServers');
-    /*
-    $marketgoo = new MarketgooProvisioning($product);
-    $product['login'] = $marketgoo->login($product['password']);
-     */
-    return 'http://whatever.com/';
+    $server = cPanelCheckDatabase::getServerDetails($product['serverid']);
+    $marketgoo = new MarketgooProvisioning([
+        'serverhostname' => $server['hostname'],
+        'serverpassword' => $server['password'],
+    ]);
+    return $marketgoo->login($product['password']);
 }
 
 generateResponse();
