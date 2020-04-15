@@ -188,23 +188,37 @@ class Mktgoo
     public function hydrate_domains(array $domains)
     {
         $hydrated = [];
-        //$active = $this->get_active_plans();
+        $active = $this->get_active_plans();
 
         foreach ($domains as $domain)
         {
+            $plan              = $this->getPlan($domain, $active);
             $uuid              = $this->container->offsetGet($domain);
             $pid               = $this->container->offsetGet($domain."_pid");
             $hydrated[$domain] = [
-                'status'     => ($this->validate_uuid($uuid)) ? 1 : 0,
+                'status'     => isset($plan) ? 1 : 0,
                 'uuid'       => $uuid,
                 'domainName' => $domain,
                 'buyUrl'     => $this->obtain_buy_url($domain),
-                'loginUrl'   => '',//$this->obtain_login_url($domain),
+                'plan'       => isset($plan) ? $plan['name'] : '',
+                'loginUrl'   => isset($plan) ? $plan['login'] : '',
                 'pid'        => $pid
             ];
         }
 
         return $hydrated;
+    }
+
+    private function getPlan($domain, $plans)
+    {
+        foreach ($plans as $plan)
+        {
+            if ($plan['domain'] == $domain)
+            {
+                return $plan;
+            }
+        }
+        return NULL;
     }
 
     public function obtain_buy_url($domain)
@@ -229,7 +243,7 @@ class Mktgoo
 
     public function get_active_plans()
     {
-        $response = invokeWhmcs('GetClientsProducts', ['username' => $this->username]);
+        $response = $this->invokeWhmcs('GetClientsProducts', ['username' => $this->username]);
         if (!isset($response['result']) || $response['result'] != "success")
         {
             return $plans;
