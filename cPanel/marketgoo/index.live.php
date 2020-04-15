@@ -379,13 +379,7 @@ echo MarketgooDriver::localAPI()->getHeader();
                                             </select>
                                         <?php endif ?>
                                     <?php else: ?>
-                                        <?php if (!empty($marketgooPlans)): ?>
-                                            <?php foreach ($marketgooPlans as $marketgooPlan): ?>
-                                                <?php if ($marketgooPlan['pid'] == $domain['pid']): ?>
-                                                    <?php echo $marketgooPlan['name'] ?>
-                                                <?php endif ?>
-                                            <?php endforeach ?>
-                                        <?php endif ?>
+                                        <?php echo $domain['plan'] ?>
                                     <?php endif; ?>
                                 </td>
                                 <td>
