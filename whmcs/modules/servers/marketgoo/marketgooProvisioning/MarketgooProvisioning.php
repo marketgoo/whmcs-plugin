@@ -1,6 +1,6 @@
 <?php
 
-require_once '../marketgooAPI/MarketgooAPI.php';
+require_once __DIR__ . '/../marketgooAPI/MarketgooAPI.php';
 
 /*
  * * ******************************************************************
