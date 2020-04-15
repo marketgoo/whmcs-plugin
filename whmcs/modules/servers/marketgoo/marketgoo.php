@@ -174,7 +174,7 @@ function marketgoo_ServiceSingleSignOn(array $params)
     try
     {
         $marketgoo = new MarketgooProvisioning($params);
-        $loginLink = $marketgoo->login($params['username']);
+        $loginLink = $marketgoo->login($params['password']);
 
         $return = [
             'success'    => true,
