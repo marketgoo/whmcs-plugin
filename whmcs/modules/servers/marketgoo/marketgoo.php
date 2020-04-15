@@ -125,7 +125,7 @@ function marketgoo_TerminateAccount($params)
     {
         $marketgoo = new MarketgooProvisioning($params);
         
-        $result = $marketgoo->terminate($params['username']);
+        $result = $marketgoo->terminate($params['password']);
 
         logModuleCall('marketgoo', 'TerminateAccount', $params, 'success', $result);
         
@@ -144,7 +144,7 @@ function marketgoo_SuspendAccount($params)
     {
         $marketgoo = new MarketgooProvisioning($params);
 
-        $result = $marketgoo->suspend($params['username']);
+        $result = $marketgoo->suspend($params['password']);
 
         logModuleCall('marketgoo', 'SuspendAccount', $params, 'success', $result);
 
@@ -163,7 +163,7 @@ function marketgoo_UnsuspendAccount($params)
     {
         $marketgoo = new MarketgooProvisioning($params);
 
-        $result = $marketgoo->unsuspend($params['username']);
+        $result = $marketgoo->unsuspend($params['password']);
 
         logModuleCall('marketgoo', 'SuspendAccount', $params, 'success', $result);
 
@@ -231,12 +231,12 @@ function marketgoo_ChangePackage($params)
 
         if (isset($params['configoptions']['producttype']))
         {
-            $result = $marketgoo->changeProduct($params['username'], $params['configoptions']['producttype']);
+            $result = $marketgoo->changeProduct($params['password'], $params['configoptions']['producttype']);
         }
 
         if (isset($params['configoptions']['keywords']))
         {
-            $result = $marketgoo->updateAddon($params['username'], $params['configoptions']['keywords']);
+            $result = $marketgoo->updateAddon($params['password'], $params['configoptions']['keywords']);
         }
         logModuleCall('marketgoo', 'ChangePackage', $params, 'success', $result);
 
