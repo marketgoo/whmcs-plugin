@@ -242,7 +242,7 @@ class Mktgoo
 
     public function get_active_plans()
     {
-        $response = invokeWhmcs('GetClientsProducts', ['username' => $this->username]);
+        $response = $this->invokeWhmcs('GetClientsProducts', ['username' => $this->username]);
         if (!isset($response['result']) || $response['result'] != "success")
         {
             return $plans;
