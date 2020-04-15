@@ -200,7 +200,7 @@ class Mktgoo
                 'uuid'       => $uuid,
                 'domainName' => $domain,
                 'buyUrl'     => $this->obtain_buy_url($domain),
-                'loginUrl'   => isset($plan) && $plan['login'],
+                'loginUrl'   => isset($plan) ? $plan['login'] : '',
                 'pid'        => $pid
             ];
         }
