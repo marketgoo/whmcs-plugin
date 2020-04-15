@@ -1,5 +1,7 @@
 <?php
 
+require_once '../marketgooProvisioning/MarketgooProvisioning.php';
+
 function generateResponse()
 {
     $postToken = filter_input(INPUT_POST, 'token', FILTER_SANITIZE_STRING);
@@ -69,12 +71,10 @@ function generateResponse()
         $filtered = [];
         foreach ($clientProducts['products']['product'] as $product)
         {
-            if ($product['username'] == $username)
+            if ($product['username'] == $username && isset($dict[$product['pid']]))
             {
-                if (isset($dict[$product['pid']]))
-                {
-                    $filtered[] = $product;
-                }
+                $product['login'] = getLoginLink($product);
+                $filtered[] = $product;
             }
         }
         $result = [
@@ -98,6 +98,16 @@ function getProducts()
         'module' => 'marketgoo'
     ];
     return localAPI('GetProducts', $postData);
+}
+
+function getLoginLink($product)
+{
+    $servers = localAPI('GetServers');
+    /*
+    $marketgoo = new MarketgooProvisioning($product);
+    $product['login'] = $marketgoo->login($product['password']);
+     */
+    return 'http://whatever.com/';
 }
 
 generateResponse();
