@@ -8,10 +8,10 @@
     {
        "icon" : "marketgoo.png",
        "group_id" : "marketing",
-       "order" : "1",
+       "order" : "1,
        "name" : "SEO Tools",
        "type" : "link",
        "id" : "marketgoo-evolution",
-       "uri" : "marketgoo/index.live.php?item=evolution"
+       "uri" : "marketgoo/index.live.php"
     }
 ]
