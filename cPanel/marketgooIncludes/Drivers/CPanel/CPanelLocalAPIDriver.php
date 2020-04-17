@@ -45,7 +45,7 @@ class CPanelLocalAPIDriver extends WHMLocalAPIDriver
     function getHeader()
     {
         if ($this->cpanel->cpanelprint('$theme') == 'paper_lantern') {
-            return $this->cpanel->header(MGLang::absoluteT('Website Marketing Tools'));
+            return $this->cpanel->header(MGLang::absoluteT('Marketing'));
         } else {
             return $this->_callAPI1('Branding', 'include', array('stdheader.html'));
         }

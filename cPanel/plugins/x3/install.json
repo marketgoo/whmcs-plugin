@@ -1,13 +1,13 @@
 [
     {
        "order" : "3",
-       "name" : "Website Marketing Tools",
+       "name" : "Marketing",
        "type" : "group",
-       "id" : "marketgoo"
+       "id" : "marketing"
     },
     {
        "icon" : "marketgoo.png",
-       "group_id" : "marketgoo",
+       "group_id" : "marketing",
        "order" : "1",
        "name" : "SEO Tools",
        "type" : "link",
