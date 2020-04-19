@@ -218,7 +218,7 @@ class Mktgoo
         $response = $this->cpanel->uapi('DomainInfo', 'domains_data');
         $main = $response['cpanelresult']['result']['data']['main_domain'];
         $active = $this->get_active_plans();
-        return $this->get_hydrate_domain($main['domain'], $active);
+        return $this->hydrate_domain($main['domain'], $active);
     }
 
     private function get_plan($domain, $plans)
