@@ -60,6 +60,17 @@ class cPanelCheckDatabase
 
     public static function generateCartLink($endpoint, $domain, $username, $pid)
     {
+        if (!isset($pid))
+        {
+            $_SESSION['marketgoo'] = array(
+                'username' => $username,
+                'domain' => $domain,
+            );
+            logModuleCall('marketgoo', 'generateCartLink', $endpoint, $username, $_SESSION['marketgoo']);
+
+            return $endpoint . '/cart.php';
+        }
+
         $cpanelHosting = self::findCpanelServer($username);
 
         $_SESSION['marketgoo'] = array(
