@@ -207,7 +207,6 @@ class Mktgoo
             'uuid'       => $uuid,
             'domainName' => $domain,
             'buyUrl'     => $this->obtain_buy_url($domain),
-            'cartUrl'     => $this->obtain_cart_url($domain),
             'plan'       => isset($plan) ? $plan['name'] : '',
             'loginUrl'   => isset($plan) ? $plan['login'] : '',
             'pid'        => $pid
@@ -237,11 +236,6 @@ class Mktgoo
     public function obtain_buy_url($domain)
     {
         return sprintf('%s/modules/servers/marketgoo/cPanelCheck/cPanelCheck.php?username=%s&domain=%s', $this->config['endpoint'], $this->username, $domain);
-    }
-
-    public function obtain_cart_url($domain)
-    {
-        return sprintf('%s/modules/servers/marketgoo/cPanelCheck/cartCheck.php?username=%s&domain=%s', $this->config['endpoint'], $this->username, $domain);
     }
 
     public function get_buy_plans()

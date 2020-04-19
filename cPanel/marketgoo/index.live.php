@@ -13,7 +13,7 @@ if ($plan['status'] == 1)
 }
 else
 {
-    header('Location: ' . $plan['cartUrl']);
+    header('Location: ' . $plan['buyUrl']);
     exit();
 }
 
