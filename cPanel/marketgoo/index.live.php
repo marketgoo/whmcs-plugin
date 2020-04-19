@@ -4,21 +4,20 @@ require("marketgoo.live.php");
 $mktgoo = new Mktgoo();
 
 $plan = $mktgoo->get_active_plan_for_main();
+//var_dump($plan);
 
-/*
-if (isset($plan))
+if ($plan['status'] == 1)
 {
-               header('Location: '.$link);
-            exit();
-
+    header('Location: ' . $plan['loginUrl']);
+    exit();
 }
 else
 {
-               header('Location: '.$link);
-            exit();
-
+    header('Location: ' . $plan['cartUrl']);
+    exit();
 }
- */
+
+// What follows is older code to present page to buy plan.
 
 $marketgooPlans = $mktgoo->get_buy_plans();
 //echo '<pre>';
