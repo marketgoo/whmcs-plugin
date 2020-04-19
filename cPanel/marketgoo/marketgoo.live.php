@@ -192,7 +192,7 @@ class Mktgoo
 
         foreach ($domains as $domain)
         {
-            $plan              = $this->getPlan($domain, $active);
+            $plan              = $this->get_plan($domain, $active);
             $uuid              = $this->container->offsetGet($domain);
             $pid               = $this->container->offsetGet($domain."_pid");
             $hydrated[$domain] = [
@@ -209,7 +209,13 @@ class Mktgoo
         return $hydrated;
     }
 
-    private function getPlan($domain, $plans)
+    public function get_active_plan($domain)
+    {
+        $active = $this->get_active_plans();
+        return $this->get_plan($domain, $active);
+    }
+
+    private function get_plan($domain, $plans)
     {
         foreach ($plans as $plan)
         {
