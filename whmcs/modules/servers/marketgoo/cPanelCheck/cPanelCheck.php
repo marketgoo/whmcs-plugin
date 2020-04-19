@@ -65,6 +65,7 @@ class cPanelCheck
         catch (Exception $e)
         {
             echo "Internal Error";
+            logModuleCall('marketgoo', 'cPanelCheck', $_GET, $e->getMessage(), $e);
             exit();
         }
     }
