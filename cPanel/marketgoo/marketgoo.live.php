@@ -189,30 +189,36 @@ class Mktgoo
     {
         $hydrated = [];
         $active = $this->get_active_plans();
-
         foreach ($domains as $domain)
         {
-            $plan              = $this->get_plan($domain, $active);
-            $uuid              = $this->container->offsetGet($domain);
-            $pid               = $this->container->offsetGet($domain."_pid");
-            $hydrated[$domain] = [
-                'status'     => isset($plan) ? 1 : 0,
-                'uuid'       => $uuid,
-                'domainName' => $domain,
-                'buyUrl'     => $this->obtain_buy_url($domain),
-                'plan'       => isset($plan) ? $plan['name'] : '',
-                'loginUrl'   => isset($plan) ? $plan['login'] : '',
-                'pid'        => $pid
-            ];
+            $hydrated[$domain] = $this->hydrate_domain($domain, $active);
         }
 
         return $hydrated;
     }
 
-    public function get_active_plan($domain)
+    private function hydrate_domain($domain, $active)
     {
+        $plan              = $this->get_plan($domain, $active);
+        $uuid              = $this->container->offsetGet($domain);
+        $pid               = $this->container->offsetGet($domain."_pid");
+        return [
+            'status'     => isset($plan) ? 1 : 0,
+            'uuid'       => $uuid,
+            'domainName' => $domain,
+            'buyUrl'     => $this->obtain_buy_url($domain),
+            'plan'       => isset($plan) ? $plan['name'] : '',
+            'loginUrl'   => isset($plan) ? $plan['login'] : '',
+            'pid'        => $pid
+        ];
+    }
+
+    public function get_active_plan_for_main()
+    {
+        $response = $this->cpanel->uapi('DomainInfo', 'domains_data');
+        $main = $response['cpanelresult']['result']['data']['main_domain'];
         $active = $this->get_active_plans();
-        return $this->get_plan($domain, $active);
+        return $this->get_hydrate_domain($main['domain'], $active);
     }
 
     private function get_plan($domain, $plans)

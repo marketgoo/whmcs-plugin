@@ -3,6 +3,23 @@ require("marketgoo.live.php");
 
 $mktgoo = new Mktgoo();
 
+$plan = $mktgoo->get_active_plan_for_main();
+
+/*
+if (isset($plan))
+{
+               header('Location: '.$link);
+            exit();
+
+}
+else
+{
+               header('Location: '.$link);
+            exit();
+
+}
+ */
+
 $marketgooPlans = $mktgoo->get_buy_plans();
 //echo '<pre>';
 //var_dump($marketgooPlans);
