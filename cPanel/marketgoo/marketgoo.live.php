@@ -43,11 +43,6 @@ class Mktgoo
             $config['endpoint'] = 'http://'.$config['endpoint'];
         }
 
-        if (substr($config['buy_url'], 0, 4) != 'http')
-        {
-            $config['buy_url'] = 'http://'.$config['buy_url'];
-        }
-
         return $config;
     }
 
