@@ -6,7 +6,8 @@ This is a pre-release version, please use with care.
 
 ## Installation
 
-Not yet ready.
+Please refer to the
+[User Guide](https://www.notion.so/User-Guide-7c0679f11fd446528600c0d6010d2016).
 
 (C) 2020 marketgoo.
 
