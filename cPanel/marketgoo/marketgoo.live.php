@@ -43,6 +43,11 @@ class Mktgoo
             $config['endpoint'] = 'http://'.$config['endpoint'];
         }
 
+        if (substr($config['buy_url'], 0, 4) != 'http')
+        {
+            $config['buy_url'] = 'http://'.$config['buy_url'];
+        }
+
         return $config;
     }
 
@@ -235,6 +240,11 @@ class Mktgoo
 
     public function obtain_buy_url($domain)
     {
+        $buy_url = $this->config['buy_url'];
+        if (isset($buy_url) && !empty($buy_url))
+        {
+            return $buy_url;
+        }
         return sprintf('%s/modules/servers/marketgoo/cPanelCheck/cPanelCheck.php?username=%s&domain=%s', $this->config['endpoint'], $this->username, $domain);
     }
 

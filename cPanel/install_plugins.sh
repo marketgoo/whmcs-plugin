@@ -23,7 +23,8 @@ THEMES=`find $THEMEDIR -maxdepth 1 -type d -exec basename {} \; | tail -n +2`
 TEMPDIR=/
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-url=$1
+endpoint_whmcs=$1
+buy_url=$2
 
 display_progress()
 {
@@ -37,16 +38,25 @@ install_libraries()
     )
     configFile='/usr/local/cpanel/etc/marketgoo.ini';
 
-    if [ -z "$url" ]
+    if [ -z "$endpoint_wmhcs" ]
     then
         echo -n "
 Enter WHMCS endpoint URL:
 :";
-        read url;
+        read endpoint_wmhcs;
+    fi
+
+    if [ -z "$buy_url" ]
+    then
+        echo -n "
+Enter URL to buy plans (leave blank to use WHMCS):
+:";
+        read buy_url;
     fi
 
     echo "
-    endpoint='$url'
+    endpoint='$endpoint_wmhcs'
+    buy_url='$buy_url'
     " > "$configFile"
 
     for dir in "${copyFiles[@]}"
