@@ -3,6 +3,15 @@ require("marketgoo.live.php");
 
 $mktgoo = new Mktgoo();
 
+$buy_url = $mktgoo->config['buy_url'];
+
+// redirect to the buy URL if configured
+if (isset($buy_url) && !empty($buy_url)) {
+    header('Location: ' . $plan['buyUrl']);
+    exit();
+}
+
+/*
 $plan = $mktgoo->get_active_plan_for_main();
 //var_dump($plan);
 
@@ -16,8 +25,7 @@ else
     header('Location: ' . $plan['buyUrl']);
     exit();
 }
-
-// What follows is older code to present page to buy plan.
+ */
 
 $marketgooPlans = $mktgoo->get_buy_plans();
 //echo '<pre>';
