@@ -188,18 +188,17 @@ class Mktgoo
     public function hydrate_domains(array $domains)
     {
         $hydrated = [];
-        $active = $this->get_active_plans();
         foreach ($domains as $domain)
         {
-            $hydrated[$domain] = $this->hydrate_domain($domain, $active);
+            $hydrated[$domain] = $this->hydrate_domain($domain);
         }
 
         return $hydrated;
     }
 
-    private function hydrate_domain($domain, $active)
+    private function hydrate_domain($domain)
     {
-        $plan              = $this->get_plan($domain, $active);
+        $plan              = $this->get_plan_for_domain($domain);
         $uuid              = $this->container->offsetGet($domain);
         $pid               = $this->container->offsetGet($domain."_pid");
         return [
@@ -271,6 +270,20 @@ class Mktgoo
             $plans[] = $product;
         }
         return $plans;
+    }
+
+    public function get_plan_for_domain($domain) {
+        $response = $this->invokeWhmcs('GetClientsProducts', ['domain' => $domain]);
+        if (!isset($response['result']) || $response['result'] != "success")
+        {
+            return $plans;
+        }
+        $plans = [];
+        foreach ($response['products'] as $product)
+        {
+            return $product;
+        }
+        return null;
     }
 
     private function invokeWhmcs($action, $additional = [])
