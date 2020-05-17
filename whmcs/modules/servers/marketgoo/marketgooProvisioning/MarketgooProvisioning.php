@@ -31,11 +31,12 @@ class MarketgooProvisioning
 
     public function create($params)
     {
+        $domain = $_SESSION['marketgoo']['domain'] ?? $params['customfields']['Domain'];
         $response = $this->marketgooAPI->post([
             'request'     => ['accounts' => ''],
             'additional'  => [
                 'product' => $params['configoption1'],
-                'domain'  => $_SESSION['marketgoo']['domain'],
+                'domain'  => $domain,
                 'name'    => $params['clientsdetails']['fullname'],
                 'email'   => $params['clientsdetails']['email']
             ]
