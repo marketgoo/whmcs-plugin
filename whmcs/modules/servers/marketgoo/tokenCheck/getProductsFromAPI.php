@@ -72,7 +72,7 @@ function generateResponse()
         $filtered = [];
         foreach ($clientProducts['products']['product'] as $product)
         {
-            if ($product['username'] == $username && isset($dict[$product['pid']]))
+            if (isset($dict[$product['pid']]))
             {
                 $product['login'] = getLoginLink($product);
                 $filtered[] = $product;
