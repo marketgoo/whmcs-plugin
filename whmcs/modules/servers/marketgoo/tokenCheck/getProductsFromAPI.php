@@ -45,9 +45,9 @@ function generateResponse()
     }
     elseif ($action == 'GetClientsProducts')
     {
-        $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
+        $domain = filter_input(INPUT_POST, 'domain', FILTER_SANITIZE_STRING);
         $postData = [
-            'username2' => $username,
+            'domain' => $domain,
         ];
         $clientProducts = localAPI($action, $postData);
         if ($clientProducts['result'] != 'success')
