@@ -31,7 +31,7 @@ class MarketgooProvisioning
 
     public function create($params)
     {
-        $domain = $_SESSION['marketgoo']['domain'] ?? $params['customfields']['Domain'];
+        $domain = isset($_SESSION['marketgoo']['domain']) ? $_SESSION['marketgoo']['domain'] : $params['customfields']['Domain'];
         $response = $this->marketgooAPI->post([
             'request'     => ['accounts' => ''],
             'additional'  => [

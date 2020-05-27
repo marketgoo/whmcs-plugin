@@ -92,7 +92,7 @@ function marketgoo_CreateAccount($params)
             return $message;
         }
 
-        $domain = $_SESSION['marketgoo']['domain'] ?? $params['customfields']['Domain'];
+        $domain = isset($_SESSION['marketgoo']['domain']) ? $_SESSION['marketgoo']['domain'] : $params['customfields']['Domain'];
         $vars = [
             'serviceid'       => $params['serviceid'],
             'serviceusername' => $_SESSION['marketgoo']['username'],
