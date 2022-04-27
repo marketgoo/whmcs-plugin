@@ -55,6 +55,7 @@ function marketgoo_ConfigOptions($params)
     $serverData = [
         'serverhostname' => $serverDataRaw->hostname,
         'serverpassword' => decrypt($serverDataRaw->password),
+        'whmcsVersion' => isset($params['whmcsVersion']) ? $params['whmcsVersion'] : null
     ];
 
     //initialize marketgoo API
