@@ -59,32 +59,45 @@ function marketgoo_ConfigOptions($params)
 
     //initialize marketgoo API
     $marketgoo  = new MarketgooProvisioning($serverData);
-    $products   = $marketgoo->getProductsList();
     $options = [];
-    foreach ($products as $product)
-    {
-        $options[$product['key']] = $product['name'];
+    if (isset($params['isAddon']) && !!$params['isAddon']) {
+        // marketgoo Addons can't be configured directly as Addons modules
+        logModuleCall( 'marketgoo', 'ConfigOptions[addon]', '<not available>', '<not available>');
+
+        return [
+            "addon" => [
+                "FriendlyName" => "Unavailable",
+                "Type" => "dropdown",
+                "Options" => array(),
+                "Description" => "There are no addons available for marketgoo products.",
+            ],
+        ];
+    } else {
+        $products = $marketgoo->getProductsList();
+        foreach ($products as $product) {
+            $options[$product->key] = $product->name;
+        }
+        logModuleCall( 'marketgoo', 'ConfigOptions[products]', $params, $options);
+
+        return [
+            "product" => [
+                "FriendlyName" => "Product",
+                "Type" => "dropdown",
+                "Options" => $options,
+                "Description" => "Choose the marketgoo product",
+            ],
+        ];
     }
-    logModuleCall('marketgoo', 'ConfigOptions', $params, 'response', $options);
-    return [
-        "product" => [
-            "FriendlyName" => "Product",
-            "Type" => "dropdown",
-            "Options" => $options,
-            "Description" => "Choose the marketgoo Product",
-        ],
-    ];
 }
 
 function marketgoo_CreateAccount($params)
 {
     logModuleCall('marketgoo', 'CreateAccount', $params, 'response', $params);
+
     try
     {
         $marketgoo = new MarketgooProvisioning($params);
-
         $accountId = $marketgoo->create($params);
-        
         if (empty($accountId) || !$accountId || $accountId == '')
         {
             $message = 'Error when creating marketgoo account';
@@ -97,7 +110,7 @@ function marketgoo_CreateAccount($params)
             'serviceid'       => $params['serviceid'],
             'serviceusername' => $_SESSION['marketgoo']['username'],
             'domain'          => $domain,
-			'servicepassword' => $accountId,
+            'servicepassword' => $accountId,
         ];
         $result = localAPI('UpdateClientProduct', $vars);
         
@@ -110,6 +123,7 @@ function marketgoo_CreateAccount($params)
             logModuleCall('marketgoo', 'CreateAccount', $vars, $message, $result);
             return $message;
         }
+
         logModuleCall('marketgoo', 'CreateAccount', $params, 'success', $accountId);
         return 'success';
     }
@@ -125,7 +139,6 @@ function marketgoo_TerminateAccount($params)
     try
     {
         $marketgoo = new MarketgooProvisioning($params);
-        
         $result = $marketgoo->terminate($params['password']);
 
         logModuleCall('marketgoo', 'TerminateAccount', $params, 'success', $result);
@@ -144,9 +157,7 @@ function marketgoo_SuspendAccount($params)
     try
     {
         $marketgoo = new MarketgooProvisioning($params);
-
         $result = $marketgoo->suspend($params['password']);
-
         logModuleCall('marketgoo', 'SuspendAccount', $params, 'success', $result);
 
         return 'success';
@@ -163,10 +174,8 @@ function marketgoo_UnsuspendAccount($params)
     try
     {
         $marketgoo = new MarketgooProvisioning($params);
-
         $result = $marketgoo->unsuspend($params['password']);
-
-        logModuleCall('marketgoo', 'SuspendAccount', $params, 'success', $result);
+        logModuleCall('marketgoo', 'UnsuspendAccount', $params, 'success', $result);
 
         return 'success';
     }
@@ -183,7 +192,6 @@ function marketgoo_ServiceSingleSignOn(array $params)
     {
         $marketgoo = new MarketgooProvisioning($params);
         $loginLink = $marketgoo->login($params['password']);
-
         logModuleCall('marketgoo', 'ServiceSingleSignOn', $params, 'success', $loginLink);
 
         return [
@@ -207,12 +215,11 @@ function marketgoo_ClientArea($params)
     {
         $marketgoo = new MarketgooProvisioning($params);
         $loginLink = $marketgoo->login($params['password']);
-
         logModuleCall('marketgoo', 'ClientArea', $params, $loginLink, $loginLink);
 
         return [
             'templatefile' => 'clientarea',
-            'vars'         => [
+            'vars' => [
                 'target' => $loginLink,
             ]
         ];
@@ -229,18 +236,9 @@ function marketgoo_ChangePackage($params)
     try
     {
         $marketgoo = new MarketgooProvisioning($params);
+        $result = $marketgoo->changeProduct($params['password'], $params['configoption1']);
 
-        if (isset($params['configoptions']['producttype']))
-        {
-            $result = $marketgoo->changeProduct($params['password'], $params['configoptions']['producttype']);
-        }
-
-        if (isset($params['configoptions']['keywords']))
-        {
-            $result = $marketgoo->updateAddon($params['password'], $params['configoptions']['keywords']);
-        }
-        logModuleCall('marketgoo', 'ChangePackage', $params, 'success', $result);
-
+        logModuleCall('marketgoo', 'ChangePackage', $params, $result);
         return "success";
     }
     catch (Exception $e)
