@@ -91,7 +91,7 @@ class MarketgooAPI
     {
         if (isset($data->errors)) {
             return implode(", ", array_reduce($data->errors, function ($carry, $item) {
-                $carry[] = (isset($item->status) ? $item->status : $item->code) . ": " . $item->title;
+                $carry[] = (isset($item->status) ? $item->status : $item->code) . ": " . $item->title . " - " . $item->detail;
                 return $carry;
             }, array()));
         } else {
