@@ -2,18 +2,19 @@
 
 use Illuminate\Database\Capsule\Manager as DB;
 
-class PDOWrapper
+class MktgooPDOWrapper
 {
-    public static function query($query, $params = array()) {
+    public static function query($query, $params = array())
+    {
         $statement = DB::connection()
-                ->getPdo()
-                ->prepare($query);
+            ->getPdo()
+            ->prepare($query);
         $statement->execute($params);
         return $statement;
     }
     public static function real_escape_string($string)
-    {  
-        return substr(DB::connection()->getPdo()->quote($string),1,-1);
+    {
+        return substr(DB::connection()->getPdo()->quote($string), 1, -1);
     }
     public static function fetch_assoc($query)
     {
@@ -35,7 +36,7 @@ class PDOWrapper
     public static function insert_id()
     {
         return DB::connection()
-                ->getPdo()
-                ->lastInsertId();
+            ->getPdo()
+            ->lastInsertId();
     }
 }

@@ -21,7 +21,7 @@ namespace Servers\Marketgoo\Cpanel;
  *
  * ******************************************************************** */
 
-require_once ROOTDIR.'/modules/servers/marketgoo/marketgooHelpers/PDOWrapper.php';
+require_once ROOTDIR . '/modules/servers/marketgoo/marketgooHelpers/MktgooPDOWrapper.php';
 
 /**
  * Description of Cpanel
@@ -65,19 +65,18 @@ class Cpanel
 
         $this->findCpanelHosting();
 
-        if (!empty($this->hosting))
-        {
+        if (!empty($this->hosting)) {
             $this->cpanelPassword = $this->findCpanelPassword();
             $this->cpanelUrl      = $this->findCpanelUrl();
 
             $this->connectToCpanel();
-        }
-        else
-        {
+        } else {
             logActivity(
                 sprintf(
                     'marketgoo: Passed username (%s) does not match any cPanel hostings for this account. Service ID: %s',
-                    $this->cpanelUsername, $this->serviceId, $this->serviceId
+                    $this->cpanelUsername,
+                    $this->serviceId,
+                    $this->serviceId
                 )
             );
         }
@@ -86,23 +85,22 @@ class Cpanel
     private function findCpanelHosting()
     {
         $query = sprintf('SELECT hosting.*, '
-                . 'server.ipaddress as server_ipaddress, '
-                . 'server.username as server_username, '
-                . 'server.password as server_password, '
-                . 'server.secure as server_secure FROM tblhosting hosting '
-                . 'LEFT JOIN tblproducts prod ON hosting.packageid = prod.id '
-                . 'LEFT JOIN tblservers server ON hosting.server = server.id '
-                . 'WHERE hosting.userid = %s AND prod.servertype = "cpanel" '
-                . 'AND hosting.username = "%s"', $this->params['userid'], $this->cpanelUsername);
+            . 'server.ipaddress as server_ipaddress, '
+            . 'server.username as server_username, '
+            . 'server.password as server_password, '
+            . 'server.secure as server_secure FROM tblhosting hosting '
+            . 'LEFT JOIN tblproducts prod ON hosting.packageid = prod.id '
+            . 'LEFT JOIN tblservers server ON hosting.server = server.id '
+            . 'WHERE hosting.userid = %s AND prod.servertype = "cpanel" '
+            . 'AND hosting.username = "%s"', $this->params['userid'], $this->cpanelUsername);
 
-        $result = \PDOWrapper::query($query);
+        $result = \MktgooPDOWrapper::query($query);
 
-        if ($result == false)
-        {
+        if ($result == false) {
             return false;
         }
 
-        $hosting = \PDOWrapper::fetch_array($result);
+        $hosting = \MktgooPDOWrapper::fetch_array($result);
 
         $this->hosting = $hosting;
     }
@@ -138,25 +136,22 @@ class Cpanel
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         $resp = curl_exec($ch);
 
-        if ($resp === false)
-        {
+        if ($resp === false) {
             throw new \Exception('cURL Error : ' . curl_error($ch));
         }
 
-        if(curl_error($ch))
-        {
-            logModuleCall('marketgoo','Error when connecting to cPanel', ['URL' => $url], curl_error($ch));
+        if (curl_error($ch)) {
+            logModuleCall('marketgoo', 'Error when connecting to cPanel', ['URL' => $url], curl_error($ch));
 
-            throw new \Exception('Error when connecting to cPanel: '.curl_error($ch));
+            throw new \Exception('Error when connecting to cPanel: ' . curl_error($ch));
         }
 
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-        if ($httpCode >= 400 && $httpCode < 500)
-        {
+        if ($httpCode >= 400 && $httpCode < 500) {
             logModuleCall('marketgoo', 'Error when connecting to cPanel', ['URL' => $url], ['errorCode' => $httpCode]);
 
-            throw new \Exception('CODE: '.$httpCode);
+            throw new \Exception('CODE: ' . $httpCode);
         }
 
         curl_close($ch);
@@ -173,8 +168,7 @@ class Cpanel
         preg_match_all('/^Set-Cookie:\s*([^;]*)/mi', $resp, $matches);
         $cookies = [];
 
-        foreach ($matches[1] as $item)
-        {
+        foreach ($matches[1] as $item) {
             parse_str($item, $cookie);
             $cookies = array_merge($cookies, $cookie);
         }
@@ -204,14 +198,21 @@ class Cpanel
 
     public function sendUuid($uuid)
     {
-        if(!empty($this->hosting))
-        {
+        if (!empty($this->hosting)) {
             $url = sprintf(
-                    '%s/%s/frontend/%s/marketgoo/index.live.php?'
+                '%s/%s/frontend/%s/marketgoo/index.live.php?'
                     . 'item=%s'
                     . '&domain=%s'
                     . '&signupok=%s'
-                    . '&pid=%s', $this->cpanelUrl, $this->cpsess, $this->template, $this->item, $this->domain, $uuid, $this->params['pid']);
+                    . '&pid=%s',
+                $this->cpanelUrl,
+                $this->cpsess,
+                $this->template,
+                $this->item,
+                $this->domain,
+                $uuid,
+                $this->params['pid']
+            );
 
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
@@ -223,25 +224,23 @@ class Cpanel
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             $this->addCookies($ch);
             $resp = curl_exec($ch);
-            
-            if(curl_error($ch))
-            {
-                logModuleCall('marketgoo','SendUuidToCpanel', ['URL' => $url, 'uuid' => $uuid], curl_error($ch));
 
-                throw new Exception('Error when connecting to cPanel: '.curl_error($ch));
+            if (curl_error($ch)) {
+                logModuleCall('marketgoo', 'SendUuidToCpanel', ['URL' => $url, 'uuid' => $uuid], curl_error($ch));
+
+                throw new Exception('Error when connecting to cPanel: ' . curl_error($ch));
             }
-            
+
             $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-            if ($httpCode >= 400 && $httpCode < 500)
-            {
+            if ($httpCode >= 400 && $httpCode < 500) {
                 logModuleCall('marketgoo', 'SendUuidToCpanel', ['URL' => $url], print_r($resp, true), ['uuid' => $uuid], []);
 
-                throw new Exception('CODE: '.$httpCode.'. '.$resp);
+                throw new Exception('CODE: ' . $httpCode . '. ' . $resp);
             }
 
             logModuleCall('marketgoo', 'SendUuidToCpanel', ['URL' => $url], print_r($resp, true), ['uuid' => $uuid], []);
-            
+
             return $resp;
         }
     }
@@ -250,8 +249,7 @@ class Cpanel
     {
         $cookie = [];
 
-        foreach ($this->cookies as $key => $value)
-        {
+        foreach ($this->cookies as $key => $value) {
             $cookie[] = "{$key}={$value}";
         }
 
