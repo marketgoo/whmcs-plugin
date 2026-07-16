@@ -189,6 +189,20 @@ function marketgoo_UnsuspendAccount($params)
 
 function marketgoo_ServiceSingleSignOn(array $params)
 {
+    if (!preg_match('/^[0-9a-fA-F]{40}$/', $params['password'])) {
+        $message = sprintf(
+            "The Service for product '%s' is not yet provisioned. Service status is '%s'.",
+            $params['configoption1'],
+            $params['status']
+        );
+
+        logModuleCall('marketgoo', 'ServiceSingleSignOn', $params, 'FAILED: ' . $message);
+        return [
+            'success' => false,
+            'errorMsg' => $message
+        ];
+    }
+
     try
     {
         $marketgoo = new MarketgooProvisioning($params);
