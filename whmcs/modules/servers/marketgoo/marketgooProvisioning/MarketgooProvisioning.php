@@ -36,14 +36,25 @@ class MarketgooProvisioning
     public function create($params)
     {
         $domain = isset($_SESSION['marketgoo']['domain']) ? $_SESSION['marketgoo']['domain'] : $params['customfields']['Domain'];
+
+        $additional = [];
+        if (!in_array($params['configoption2'], ['none', 'select'])) {
+            $additional['partner_token'] = $params['configoption2'];
+        }
+
+        if (!empty($params['configoption3'])) {
+            $additional['promo'] = $params['configoption3'];
+        }
+
         $response = $this->marketgooAPI->post(
             'accounts',
-            [
+            array_merge([
                 'product' => $params['configoption1'],
                 'domain'  => $domain,
                 'name'    => $params['clientsdetails']['fullname'],
-                'email'   => $params['clientsdetails']['email']
-            ]
+                'email'   => $params['clientsdetails']['email'],
+                'lang'    => $this->getLanguageCode($params['clientsdetails']['language']),
+            ], $additional)
         );
 
         return $response->uuid;
@@ -84,6 +95,35 @@ class MarketgooProvisioning
     public function getProductsList()
     {
         return $this->marketgooAPI->get("me/products");
+    }
+
+    /** OK **/
+    public function getParnerTokens()
+    {
+        return $this->marketgooAPI->get("me/tokens");
+    }
+
+    protected function getLanguageCode($language = '')
+    {
+        // get system default language if language is empty
+        if (empty($language)) {
+            $language = WHMCS\Config\Setting::getValue("Language");
+        }
+
+        $language = strtolower($language);
+        $langCodes = [
+            'english' => 'en',
+            'swedish' => 'sv',
+            'danish' => 'da',
+            'spanish' => 'es',
+            'french' => 'fr',
+            'portuguese' => 'pt',
+            'german' => 'de',
+            'dutch' => 'nl',
+            'norwegian' => 'nb'
+        ];
+
+        return $langCodes[$language] ?? $langCodes['english'];
     }
 
 }

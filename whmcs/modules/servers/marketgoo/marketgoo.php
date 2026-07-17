@@ -61,6 +61,7 @@ function marketgoo_ConfigOptions($params)
     //initialize marketgoo API
     $marketgoo  = new MarketgooProvisioning($serverData);
     $options = [];
+    $tokens = ['select' => 'Select'];
     if (isset($params['isAddon']) && !!$params['isAddon']) {
         // marketgoo Addons can't be configured directly as Addons modules
         logModuleCall( 'marketgoo', 'ConfigOptions[addon]', '<not available>', '<not available>');
@@ -71,7 +72,7 @@ function marketgoo_ConfigOptions($params)
                 "Type" => "dropdown",
                 "Options" => array(),
                 "Description" => "There are no addons available for marketgoo products.",
-            ],
+            ]
         ];
     } else {
         $products = $marketgoo->getProductsList();
@@ -80,12 +81,34 @@ function marketgoo_ConfigOptions($params)
         }
         logModuleCall( 'marketgoo', 'ConfigOptions[products]', $params, $options);
 
+        $partnerTokens = $marketgoo->getParnerTokens();
+        if (!empty($partnerTokens)) {
+            foreach ($partnerTokens as $token) {
+                $tokens[$token->token] = $token->name;
+            }
+            logModuleCall( 'marketgoo', 'ConfigOptions[partner_tokens]', $params, $tokens);
+        } else {
+            $tokens = ['none' => 'Not Applicable'];
+        }
+
         return [
             "product" => [
                 "FriendlyName" => "Product",
                 "Type" => "dropdown",
                 "Options" => $options,
-                "Description" => "Choose the marketgoo product",
+                "Description" => "Choose the marketgoo product"
+            ],
+            'partner_token' => [
+                "FriendlyName" => "Partner Token",
+                "Type" => "dropdown",
+                "Options" => $tokens,
+                "Description" => "Select the marketgoo Partner Token, if applicable"
+            ],
+            'promo' => [
+                "FriendlyName" => "Promo",
+                "Type" => "text",
+                "Size" => "15",
+                "Description" => "Input the marketgoo promo, if applicable"
             ],
         ];
     }
